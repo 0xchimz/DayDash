@@ -11,8 +11,9 @@ public class GameController : MonoBehaviour {
 	Player currentPlayer;
 
 	void Start () {
-		socketIO.On ("USER_CONNECTED", OnUserConnected);
-		socketIO.On("USER_DISCONNECTED", OnUserDisconnected );
+		socketIO.On ("USER_CONNECTED", onUserConnected);
+		socketIO.On ("USER_ROLE", onUserRole);
+		socketIO.On ("USER_DISCONNECTED", onUserDisconnected );
 
 		GameObject player = GameObject.Instantiate (playerGameObj.gameObject, playerGameObj.position, Quaternion.identity) as GameObject;
 		currentPlayer = player.GetComponent<Player> ();
@@ -31,11 +32,21 @@ public class GameController : MonoBehaviour {
 		socketIO.Emit("JOIN_ROOM");
 	}
 
-	void OnUserDisconnected (SocketIOEvent obj) {
+	void onUserRole (SocketIOEvent obj) {
+		string response = JsonToString (obj.data.GetField ("role").ToString (), "\"");
+		playerGameObj.role = response;
+	}
+
+	void onUserDisconnected (SocketIOEvent obj) {
 		Debug.Log ("Desconnect from server.");
 	}
 
-	void OnUserConnected (SocketIOEvent obj) {
+	void onUserConnected (SocketIOEvent obj) {
 		Debug.Log ("Joining Room.");
+	}
+
+	string JsonToString( string target, string s){
+		string[] newString = Regex.Split(target,s);
+		return newString[1];
 	}
 }
