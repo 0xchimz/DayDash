@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour {
 		GameObject player = GameObject.Instantiate (playerGameObj.gameObject, playerGameObj.position, Quaternion.identity) as GameObject;
 		currentPlayer = player.GetComponent<Player> ();
 	}
+
 	// Update is called once per frame
 	void Update () {
 	
