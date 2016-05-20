@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -11,6 +12,7 @@ public class GameController : MonoBehaviour {
 
 	public SocketIOComponent socket;
 
+	private Player player = new Player();
 	private Room room;
 	private int statusGame;
 
@@ -22,7 +24,8 @@ public class GameController : MonoBehaviour {
 
 		socket.On ("USER_CONNECTED", onUserConnected);
 		socket.On ("JOIN_RESPONSE", onJoined);
-		socket.On ("ROOM", onRoom);
+		socket.On ("START_GAME", onStart);
+		socket.On ("MAP_INFO", mapInfo);
 		socket.On ("USER_DISCONNECTED", onUserDisconnected );
 
 		socket.On ("error", onError);
@@ -47,7 +50,13 @@ public class GameController : MonoBehaviour {
 	}
 
 	void onError(SocketIOEvent e){
+		statusGame = CONNECTING;
 		Debug.Log ("Connect error received: " + e.name + " " + e.data);
+	}
+
+	void mapInfo(SocketIOEvent e){
+		string mapType = e.data.GetField ("data").ToString();
+		player.mapType = mapType.Substring(1, mapType.Length - 2);
 	}
 
 	void FindingMatch(){
@@ -59,10 +68,18 @@ public class GameController : MonoBehaviour {
 		Debug.Log ("Disconnect");
 	}
 
-	void onRoom (SocketIOEvent obj){
+	void onStart (SocketIOEvent obj){
 		statusGame = STARTING;
-		Debug.Log ("onRoom");
-		Debug.Log (obj);
+		Debug.Log ("Starting Game, Type: " + player.mapType);
+		if (player.mapType.Equals ("FINDER")) {
+			string sceneName = "_lv" + room.currentLevel + ".find";
+			Debug.Log (sceneName);
+			EditorSceneManager.LoadScene (sceneName);
+		} else if (player.mapType.Equals ("ESCAPER")) {
+			string sceneName = "_lv" + room.currentLevel + ".escape";
+			Debug.Log (sceneName);
+			EditorSceneManager.LoadScene (sceneName);
+		}
 	}
 
 	void onJoined (SocketIOEvent obj) {
