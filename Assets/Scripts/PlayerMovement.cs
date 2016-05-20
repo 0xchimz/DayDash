@@ -50,7 +50,9 @@ public class PlayerMovement : MonoBehaviour
 
 		// Normalise the movement vector and make it proportional to the speed per second.
 		movement = movement.normalized * speed * Time.deltaTime;
-		Turning (movement);
+		if (h != 0 || v != 0) {
+			Turning (movement);
+		}
 
 		// Move the player to it's current position plus the movement.
 		playerRigidbody.MovePosition (transform.position + movement);
