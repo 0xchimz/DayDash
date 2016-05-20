@@ -71,8 +71,17 @@ public class GameController : MonoBehaviour {
 		JSONObject response = obj.data.GetField ("roomInfo");
 		string status = response.GetField ("status").ToString();
 		string no = response.GetField ("no").ToString();
-		string level = response.GetField ("level").ToString();
-		room = new Room (no, level, status);
+		string level = response.GetField ("currentLevel").ToString();
+		string keyNo = response.GetField ("keyNo").ToString ();
+		keyNo = keyNo.Substring (1, keyNo.Length - 2);
+
+		string[] tmpKey = keyNo.Split (',');
+		int[] keyList = new int[tmpKey.Length];
+		for (int i = 0; i < tmpKey.Length; i++) {
+			keyList [i] = int.Parse (tmpKey [i]);
+		}
+
+		room = new Room (no, level, status, keyList);
 		Debug.Log ("Room no." + no + " Level: " + level);
 	}
 
