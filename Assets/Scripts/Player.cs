@@ -16,14 +16,12 @@ public class Player : MonoBehaviour {
 
 	void OnTriggerEnter (Collider gameElement)
 	{
-		//Debug.Log ("Player got key");
 		if (gameElement.tag == "Key") {
 			Debug.Log ("Player got key");
 			key.active = false;
 		
 		}
-
-
+			
 	}
 
 }
