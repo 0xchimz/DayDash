@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using SocketIO;
 
 public class Player : MonoBehaviour {
 
@@ -9,6 +10,7 @@ public class Player : MonoBehaviour {
 	public string mapType;
 
 	public GameObject key; 
+	private SocketIOComponent socket;
 
 	void Start () {
 		this.name = playerName;
