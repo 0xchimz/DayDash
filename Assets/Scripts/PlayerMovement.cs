@@ -8,7 +8,6 @@ public class PlayerMovement : MonoBehaviour
 	Animator anim;                      // Reference to the animator component.
 	Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
 	int floorMask;                      // A layer mask so that a ray can be cast just at gameobjects on the floor layer.
-	float camRayLength = 100f;          // The length of the ray from the camera into the scene.
 
 
 
@@ -33,13 +32,10 @@ public class PlayerMovement : MonoBehaviour
 		// Move the player around the scene.
 		Move (h, v);
 
-		// Turn the player to face the mouse cursor.
-		//Turning ();
-
 		// Animate the player.
 		Animating (h, v);
 		if ( !anim.GetBool ("IsWalking")) {
-			transform.Find ("elf pet").gameObject.active = false;
+			transform.Find ("elf pet").gameObject.active = false; //no pet when player stand still
 		}
 	}
 
@@ -67,17 +63,11 @@ public class PlayerMovement : MonoBehaviour
 	{
 		// Create a boolean that is true if either of the input axes is non-zero.
 		bool walking = h != 0f || v != 0f;
-		Debug.Log ("HELLO");
 
 		// Tell the animator whether or not the player is walking.
 		anim.SetBool ("IsWalking", walking);
-			/*
-		if (walking) {
-				transform.Rotate (Vector3.up*90);
-		}
-		*/
-		
 
+		// Pet appear when player start to walk
 		transform.Find ("elf pet").gameObject.active = true;
 
 	}
