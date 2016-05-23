@@ -28,7 +28,7 @@ public class GameController : MonoBehaviour {
 		socket.On ("MAP_INFO", mapInfo);
 		socket.On ("USER_DISCONNECTED", onUserDisconnected );
 
-		socket.On ("error", onError);
+		//socket.On ("error", onError);
 		socket.On ("connect", onUserConnected);
 
 		statusGame = CONNECTING;
