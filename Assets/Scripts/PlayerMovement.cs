@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 
+
 	void Awake ()
 	{
 		// Create a layer mask for the floor layer.
@@ -31,18 +32,22 @@ public class PlayerMovement : MonoBehaviour
 	void FixedUpdate ()
 	{
 		// Store the input axes.
-		//float h = Input.GetAxisRaw ("Horizontal");
-		//float v = Input.GetAxisRaw ("Vertical");
+		float h = Input.GetAxisRaw ("Horizontal");
+		float v = Input.GetAxisRaw ("Vertical");
 
-		float h = (Input.acceleration.x - initialAttitude.x)*BASE_SPEED;
-		float v = (Input.acceleration.y - initialAttitude.y)*BASE_SPEED;
 
+		/* FOR MOBILE //////////////////////////////////////////////////
+		//float h = (Input.acceleration.x - initialAttitude.x)*BASE_SPEED;
+		//float v = (Input.acceleration.y - initialAttitude.y)*BASE_SPEED;
+
+		
 		if (Mathf.Abs (h) < 1.5)
 			h = 0.0f;
 		if (Mathf.Abs (v) < 1.5)
 			v = 0.0f;
+		*/ //////////////////////////////////////////////////////////////
 
-		Debug.Log ("X = " + h + ", Y = " + v);
+		//Debug.Log ("X = " + h + ", Y = " + v);
 
 		// Move the player around the scene.
 		Move (h, v);
