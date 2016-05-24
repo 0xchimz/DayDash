@@ -35,6 +35,7 @@ public class Player : MonoBehaviour {
 	public void FoundKey(SocketIOEvent e)
 	{
 		Debug.Log("Hey everyone, I found a key!");
+		socket.Emit ("aKey");
 	}
 
 }
