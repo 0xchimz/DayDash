@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
 	Animator anim;                      // Reference to the animator component.
 	Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
 	int floorMask;                      // A layer mask so that a ray can be cast just at gameobjects on the floor layer.
+	private int BASE_SPEED = 5;
+	private Vector3 initialAttitude;
 
 
 
@@ -20,6 +22,9 @@ public class PlayerMovement : MonoBehaviour
 		anim = GetComponent <Animator> ();
 		playerRigidbody = GetComponent <Rigidbody> ();
 		transform.Find ("elf pet").gameObject.active = false;
+
+		setInitialAttitude ();
+
 	}
 
 
@@ -29,8 +34,15 @@ public class PlayerMovement : MonoBehaviour
 		//float h = Input.GetAxisRaw ("Horizontal");
 		//float v = Input.GetAxisRaw ("Vertical");
 
-		float h = Input.acceleration.x;
-		float v = Input.acceleration.y;
+		float h = (Input.acceleration.x - initialAttitude.x)*BASE_SPEED;
+		float v = (Input.acceleration.y - initialAttitude.y)*BASE_SPEED;
+
+		if (Mathf.Abs (h) < 1.5)
+			h = 0.0f;
+		if (Mathf.Abs (v) < 1.5)
+			v = 0.0f;
+
+		Debug.Log ("X = " + h + ", Y = " + v);
 
 		// Move the player around the scene.
 		Move (h, v);
@@ -74,4 +86,10 @@ public class PlayerMovement : MonoBehaviour
 		transform.Find ("elf pet").gameObject.active = true;
 
 	}
+
+	void setInitialAttitude() {
+		initialAttitude = Input.acceleration;
+		//Debug.Log ("Initial x = " + initialAttitude.x + ", initial y = " + initialAttitude.y);
+	}
+
 }
