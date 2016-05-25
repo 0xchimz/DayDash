@@ -38,7 +38,7 @@ public class GameController : MonoBehaviour {
 		socket.On ("USER_CONNECTED", onUserConnected);
 		socket.On ("JOIN_RESPONSE", onJoined);
 		socket.On ("START_GAME", onStart);
-		socket.On ("MAP_INFO", mapInfo);
+		socket.On ("GENERATE_ITEM", itemInfo);
 		socket.On ("USER_DISCONNECTED", onUserDisconnected );
 
 		//socket.On ("error", onError);
@@ -67,8 +67,8 @@ public class GameController : MonoBehaviour {
 		Debug.Log ("Connect error received: " + e.name + " " + e.data);
 	}
 
-	void mapInfo(SocketIOEvent e){
-		Debug.Log ("Generate Map");
+	void itemInfo(SocketIOEvent e){
+		Debug.Log ("Generate Item");
 		JSONObject[] arr = e.data.GetField ("data").list.ToArray ();
 		string[] items = new string[arr.Length];
 		for (int i = 0; i < arr.Length; i++) {

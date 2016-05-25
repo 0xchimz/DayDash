@@ -13,8 +13,6 @@ public class Player : MonoBehaviour {
 
 		GameObject go = GameObject.Find("SocketIO");
 		socket = go.GetComponent<SocketIOComponent>();
-
-		socket.On("aKey", FoundKey);
 	}
 
 	void OnTriggerEnter (Collider gameElement)
@@ -22,6 +20,7 @@ public class Player : MonoBehaviour {
 		if (gameElement.tag == "Key") {
 			Debug.Log ("Player got key");
 			gameElement.gameObject.active = false;
+			socket.Emit ("FOUND_KEY");
 		}
 		if (gameElement.tag == "Door") {
 			Debug.Log ("Player on the door");
