@@ -142,9 +142,9 @@ public class GameController : MonoBehaviour {
 		this.isGamePlay = true;
 	}
 
-	void onStart (SocketIOEvent obj){
+	void onStart (SocketIOEvent e){
 		statusGame = STARTING;
-		socket.Emit("GET_ITEM");
+		JSONObject[] item = e.data.GetField ("data").list.ToArray ();
 		Debug.Log ("Starting Game");
 		MapGenerator genMapComponent = map.GetComponent<MapGenerator> ();
 		genMapComponent.GenerateMap ();

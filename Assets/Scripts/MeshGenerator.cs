@@ -57,8 +57,8 @@ public class MeshGenerator : MonoBehaviour {
 		landCollider.sharedMesh = mesh;
 
 		CreateWallMesh ();
-
 		tRig = gameObject.GetComponentInChildren<RAIN.Navigation.NavMesh.NavMeshRig>();
+
 		StartCoroutine(GenerateNavmesh());
 	}
 
