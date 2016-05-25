@@ -20,7 +20,6 @@ public class MessageText : MonoBehaviour {
 	}
 
 	public void show(){
-		Debug.Log ("Show");
 		GameCanvas.SetActive (true);
 		StartCoroutine (Coroutine());
 	}

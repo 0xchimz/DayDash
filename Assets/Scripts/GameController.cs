@@ -94,7 +94,6 @@ public class GameController : MonoBehaviour {
 			Debug.Log ("Enable the door");
 			msgText.setText("THE DOOR IS OPEN, FIND THE DOOR TO ESCAPE!");
 			msgText.show();
-		
 		}
 	}
 
