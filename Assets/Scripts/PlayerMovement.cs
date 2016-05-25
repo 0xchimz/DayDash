@@ -8,11 +8,8 @@ public class PlayerMovement : MonoBehaviour
 	Animator anim;                      // Reference to the animator component.
 	Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
 	int floorMask;                      // A layer mask so that a ray can be cast just at gameobjects on the floor layer.
-	private int BASE_SPEED = 5;
+	private int BASE_SPEED;
 	private Vector3 initialAttitude;
-
-
-
 
 	void Awake ()
 	{
@@ -22,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
 		// Set up references.
 		anim = GetComponent <Animator> ();
 		playerRigidbody = GetComponent <Rigidbody> ();
-		transform.Find ("elf pet").gameObject.active = false;
+		transform.Find ("Pet").gameObject.SetActive(false);
 
 		setInitialAttitude ();
 
@@ -36,18 +33,18 @@ public class PlayerMovement : MonoBehaviour
 		float v = Input.GetAxisRaw ("Vertical");
 
 
-		/* FOR MOBILE //////////////////////////////////////////////////
 		//float h = (Input.acceleration.x - initialAttitude.x)*BASE_SPEED;
 		//float v = (Input.acceleration.y - initialAttitude.y)*BASE_SPEED;
+		/**
 
-		
 		if (Mathf.Abs (h) < 1.5)
 			h = 0.0f;
 		if (Mathf.Abs (v) < 1.5)
 			v = 0.0f;
-		*/ //////////////////////////////////////////////////////////////
 
 		//Debug.Log ("X = " + h + ", Y = " + v);
+
+		**/
 
 		// Move the player around the scene.
 		Move (h, v);
@@ -55,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
 		// Animate the player.
 		Animating (h, v);
 		if ( !anim.GetBool ("IsWalking")) {
-			transform.Find ("elf pet").gameObject.active = false; //no pet when player stand still
+			transform.Find ("Pet").gameObject.SetActive(false); //no pet when player stand still
 		}
 	}
 
@@ -88,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
 		anim.SetBool ("IsWalking", walking);
 
 		// Pet appear when player start to walk
-		transform.Find ("elf pet").gameObject.active = true;
+		transform.Find ("Pet").gameObject.SetActive(true);
 
 	}
 

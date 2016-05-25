@@ -3,33 +3,29 @@ using System.Collections;
 using SocketIO;
 
 public class Player : MonoBehaviour {
-
-	public string playerName;
+	
 	public Vector3 position;
 	public string id;
-	public string mapType;
 
-	public GameObject key; 
 	private SocketIOComponent socket;
 
 	void Start () {
-		this.name = playerName;
 
 		GameObject go = GameObject.Find("SocketIO");
 		socket = go.GetComponent<SocketIOComponent>();
-
-		socket.On("aKey", FoundKey);
 	}
 
 	void OnTriggerEnter (Collider gameElement)
 	{
 		if (gameElement.tag == "Key") {
 			Debug.Log ("Player got key");
-			socket.Emit ("aKey");
-			key.active = false;
-		
+			gameElement.gameObject.SetActive(false);
+			socket.Emit ("FOUND_KEY");
 		}
-			
+		if (gameElement.tag == "Door") {
+			Debug.Log ("Player on the door");
+			gameElement.gameObject.SetActive(false);
+		}	
 	}
 
 	public void FoundKey(SocketIOEvent e)

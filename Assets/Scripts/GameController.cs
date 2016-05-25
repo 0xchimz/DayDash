@@ -6,26 +6,45 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using SocketIO;
 
+
 public class GameController : MonoBehaviour {
 
 	public readonly int CONNECTING = 0, CONNECTED = 1, FINDING_MATCH = 2, JOINED = 3, STARTING = 4;
+	public static GameController instance;
+	SocketIOComponent socket;
 
-	public SocketIOComponent socket;
-
-	private Player player = new Player();
+	private GameObject player;
+	private Player playerComponent;
 	private Room room;
 	private int statusGame;
+	private ArrayList gameItems = new ArrayList();
+	private MessageText msgText;
 
 	public Text status;
+	public GameObject ui;
+	public GameObject map;
+	public ItemList itemList;
+
+	void Awake ()
+	{
+		instance = this;
+	}
 
 	void Start () {
+		player = GameObject.Find ("Player");
+		playerComponent = player.GetComponent<Player> ();
+		player.SetActive (false);
+
+		ui.SetActive (true);
+
 		GameObject go = GameObject.Find("SocketIO");
 		socket = go.GetComponent<SocketIOComponent>();
 
 		socket.On ("USER_CONNECTED", onUserConnected);
 		socket.On ("JOIN_RESPONSE", onJoined);
 		socket.On ("START_GAME", onStart);
-		socket.On ("MAP_INFO", mapInfo);
+		socket.On ("GENERATE_ITEM", itemInfo);
+		socket.On ("EVENT", onEvent);
 		socket.On ("USER_DISCONNECTED", onUserDisconnected );
 
 		//socket.On ("error", onError);
@@ -34,6 +53,8 @@ public class GameController : MonoBehaviour {
 		statusGame = CONNECTING;
 
 		status.text = "CONNECTING TO SERVER...";
+
+		msgText = GetComponent<MessageText> ();
 	}
 
 	// Update is called once per frame
@@ -54,9 +75,44 @@ public class GameController : MonoBehaviour {
 		Debug.Log ("Connect error received: " + e.name + " " + e.data);
 	}
 
-	void mapInfo(SocketIOEvent e){
-		string mapType = e.data.GetField ("data").ToString();
-		player.mapType = mapType.Substring(1, mapType.Length - 2);
+	void itemInfo(SocketIOEvent e){
+		Debug.Log ("Generate Item");
+		JSONObject[] arr = e.data.GetField ("data").list.ToArray ();
+		string[] items = new string[arr.Length];
+		for (int i = 0; i < arr.Length; i++) {
+			string item = arr [i].ToString ();
+			items [i] =  item.Substring(1, item.Length - 2);
+		}
+		generateItem (items);
+	}
+
+	void onEvent(SocketIOEvent e){
+		string evn = e.data.GetField ("name").ToString();
+		string tmp = evn.Substring(1, evn.Length - 2);
+		Debug.Log (tmp);
+		if (tmp.Equals ("ENABLE_DOOR")) {
+			Debug.Log ("Enable the door");
+			msgText.setText("THE DOOR IS OPEN, FIND THE DOOR TO ESCAPE!");
+			msgText.show();
+		}
+	}
+
+	void generateItem(string[] items){
+		Vector3 min = map.GetComponent<MeshCollider> ().bounds.min;
+		Vector3 max = map.GetComponent<MeshCollider> ().bounds.max;
+		for (int i = 0; i < items.Length; i++) {
+			float x = Random.Range (min.x, max.x);
+			float z = Random.Range (min.z, max.z);
+
+			if (items [i].Equals ("KEY")) {
+				GameObject tmp = Instantiate (itemList.key, new Vector3(x, 0.2f, z), Quaternion.identity) as GameObject;
+				gameItems.Add(tmp);	
+			}
+			if (items [i].Equals ("DOOR")) {
+				GameObject tmp = Instantiate (itemList.door, new Vector3(x, 0.2f, z), Quaternion.identity) as GameObject;
+				gameItems.Add(tmp);	
+			}
+		}
 	}
 
 	void FindingMatch(){
@@ -70,16 +126,9 @@ public class GameController : MonoBehaviour {
 
 	void onStart (SocketIOEvent obj){
 		statusGame = STARTING;
-		Debug.Log ("Starting Game, Type: " + player.mapType);
-		if (player.mapType.Equals ("FINDER")) {
-			string sceneName = "_lv" + room.currentLevel + ".find";
-			Debug.Log (sceneName);
-			EditorSceneManager.LoadScene (sceneName);
-		} else if (player.mapType.Equals ("ESCAPER")) {
-			string sceneName = "_lv" + room.currentLevel + ".escape";
-			Debug.Log (sceneName);
-			EditorSceneManager.LoadScene (sceneName);
-		}
+		Debug.Log ("Starting Game");
+		ui.SetActive (false);
+		player.SetActive (true);
 	}
 
 	void onJoined (SocketIOEvent obj) {
@@ -97,7 +146,6 @@ public class GameController : MonoBehaviour {
 		for (int i = 0; i < tmpKey.Length; i++) {
 			keyList [i] = int.Parse (tmpKey [i]);
 		}
-
 		room = new Room (no, level, status, keyList);
 		Debug.Log ("Room no." + no + " Level: " + level);
 	}
@@ -106,7 +154,7 @@ public class GameController : MonoBehaviour {
 		Debug.Log ("Desconnect from server.");
 	}
 
-	void onUserConnected (SocketIOEvent obj) {
+	public void onUserConnected (SocketIOEvent obj) {
 		Debug.Log ("Connected.");
 		statusGame = CONNECTED;
 		FindingMatch ();
