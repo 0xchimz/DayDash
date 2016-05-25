@@ -98,8 +98,10 @@ public class GameController : MonoBehaviour {
 	}
 
 	void generateItem(string[] items){
-		Vector3 min = map.GetComponent<MeshCollider> ().bounds.min;
-		Vector3 max = map.GetComponent<MeshCollider> ().bounds.max;
+		Debug.Log ("GenerateItem from string array");
+		Vector3 min = map.GetComponent<MeshRenderer> ().bounds.min;
+		Vector3 max = map.GetComponent<MeshRenderer> ().bounds.max;
+		Debug.Log (min + max);
 		for (int i = 0; i < items.Length; i++) {
 			float x = Random.Range (min.x, max.x);
 			float z = Random.Range (min.z, max.z);
