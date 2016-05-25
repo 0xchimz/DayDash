@@ -59,20 +59,6 @@ public class MeshGenerator : MonoBehaviour {
 
 		CreateWallMesh ();
 
-<<<<<<< HEAD
-		RAIN.Navigation.NavMesh.NavMeshRig rig = GameObject.FindGameObjectWithTag ("NavMesh").GetComponent<RAIN.Navigation.NavMesh.NavMeshRig> ();
-		RAIN.Navigation.NavMesh.NavMesh meshZ = rig.NavMesh;
-		//clear the exitsting navmesh
-		meshZ.UnregisterNavigationGraph();
-		meshZ.StartCreatingContours(rig, 1);
-		while(meshZ.Creating)  {
-			meshZ.CreateContours ();
-			System.Threading.Thread.Sleep (10);
-		}
-
-		rig.GenerateAllContourVisuals ();
-		meshZ.RegisterNavigationGraph ();
-=======
 		tRig = gameObject.GetComponentInChildren<RAIN.Navigation.NavMesh.NavMeshRig>();
 		StartCoroutine(GenerateNavmesh());
 	}
@@ -94,7 +80,6 @@ public class MeshGenerator : MonoBehaviour {
 		Debug.Log("NavMesh generated in " + (endTime - startTime) + "s");
 		gameObject.GetComponentInChildren<RAIN.Navigation.NavMesh.NavMeshRig>().NavMesh.RegisterNavigationGraph();
 		gameObject.GetComponentInChildren<RAIN.Navigation.NavMesh.NavMeshRig>().Awake();
->>>>>>> f9cea237475948c76b0170e303418c1388ec1b41
 	}
 
 	void CreateWallMesh () {
@@ -133,7 +118,7 @@ public class MeshGenerator : MonoBehaviour {
 		case 0:
 			break;
 
-		// 1 points:
+			// 1 points:
 		case 1:
 			MeshFromPoints (square.centreLeft, square.centreBottom, square.bottomLeft);
 			break;
@@ -147,7 +132,7 @@ public class MeshGenerator : MonoBehaviour {
 			MeshFromPoints (square.topLeft, square.centreTop, square.centreLeft);
 			break;
 
-		// 2 points:
+			// 2 points:
 		case 3:
 			MeshFromPoints (square.centreRight, square.bottomRight, square.bottomLeft, square.centreLeft);
 			break;
@@ -167,7 +152,7 @@ public class MeshGenerator : MonoBehaviour {
 			MeshFromPoints (square.topLeft, square.centreTop, square.centreRight, square.bottomRight, square.centreBottom, square.centreLeft);
 			break;
 
-		// 3 point:
+			// 3 point:
 		case 7:
 			MeshFromPoints (square.centreTop, square.topRight, square.bottomRight, square.bottomLeft, square.centreLeft);
 			break;
@@ -181,7 +166,7 @@ public class MeshGenerator : MonoBehaviour {
 			MeshFromPoints (square.topLeft, square.topRight, square.bottomRight, square.centreBottom, square.centreLeft);
 			break;
 
-		// 4 point:
+			// 4 point:
 		case 15:
 			MeshFromPoints (square.topLeft, square.topRight, square.bottomRight, square.bottomLeft);
 			checkedVertices.Add (square.topLeft.vertexIndex);
