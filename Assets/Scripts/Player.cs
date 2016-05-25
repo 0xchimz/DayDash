@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using SocketIO;
+using RAIN.Navigation;
+using RAIN.Navigation.Targets;
 
 public class Player : MonoBehaviour {
 	
@@ -13,6 +15,9 @@ public class Player : MonoBehaviour {
 
 		GameObject go = GameObject.Find("SocketIO");
 		socket = go.GetComponent<SocketIOComponent>();
+
+		gameObject.GetComponentInChildren<NavigationTargetRig>().Target.MountPoint = gameObject.transform;
+		gameObject.GetComponentInChildren<NavigationTargetRig>().Target.TargetName = "NavTarget";
 	}
 
 	void OnTriggerEnter (Collider gameElement)

@@ -26,6 +26,13 @@ PluginImporter:
       enabled: 0
       settings:
         DefaultValueInitialized: true
+<<<<<<< HEAD
+=======
+    WindowsStoreApps:
+      enabled: 0
+      settings:
+        CPU: AnyCPU
+>>>>>>> f9cea237475948c76b0170e303418c1388ec1b41
   userData: 
   assetBundleName: 
   assetBundleVariant: 

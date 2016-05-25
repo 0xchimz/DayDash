@@ -1,6 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using RAIN.Navigation.NavMesh;
+using RAIN.Navigation;
+using RAIN.Navigation.Targets;
+using RAIN.Core;
+using RAIN.BehaviorTrees;
+using RAIN.Minds;
+using RAIN.Memory;
+using RAIN;
 
 public class MeshGenerator : MonoBehaviour {
 
@@ -17,6 +25,10 @@ public class MeshGenerator : MonoBehaviour {
 	Dictionary<int,List<Triangle>> triangleDictionary = new Dictionary<int, List<Triangle>> ();
 	List<List<int>> outlines = new List<List<int>> ();
 	HashSet<int> checkedVertices = new HashSet<int> ();
+
+	private int _threadCount = 4;
+	NavMeshRig tRig;
+	public bool isNavMeshDone = false;
 
 	public void GenerateMesh (int[,] map, float squareSize) {
 
@@ -47,6 +59,7 @@ public class MeshGenerator : MonoBehaviour {
 
 		CreateWallMesh ();
 
+<<<<<<< HEAD
 		RAIN.Navigation.NavMesh.NavMeshRig rig = GameObject.FindGameObjectWithTag ("NavMesh").GetComponent<RAIN.Navigation.NavMesh.NavMeshRig> ();
 		RAIN.Navigation.NavMesh.NavMesh meshZ = rig.NavMesh;
 		//clear the exitsting navmesh
@@ -59,6 +72,29 @@ public class MeshGenerator : MonoBehaviour {
 
 		rig.GenerateAllContourVisuals ();
 		meshZ.RegisterNavigationGraph ();
+=======
+		tRig = gameObject.GetComponentInChildren<RAIN.Navigation.NavMesh.NavMeshRig>();
+		StartCoroutine(GenerateNavmesh());
+	}
+
+	IEnumerator GenerateNavmesh()
+	{
+		tRig.NavMesh.UnregisterNavigationGraph();
+		tRig.NavMesh.Size = 128;
+		float startTime = Time.time;
+		tRig.NavMesh.StartCreatingContours(tRig, _threadCount);
+		while (tRig.NavMesh.Creating)
+		{
+			tRig.NavMesh.CreateContours();
+
+			yield return new WaitForSeconds(1);
+		}
+		isNavMeshDone = true;
+		float endTime = Time.time;
+		Debug.Log("NavMesh generated in " + (endTime - startTime) + "s");
+		gameObject.GetComponentInChildren<RAIN.Navigation.NavMesh.NavMeshRig>().NavMesh.RegisterNavigationGraph();
+		gameObject.GetComponentInChildren<RAIN.Navigation.NavMesh.NavMeshRig>().Awake();
+>>>>>>> f9cea237475948c76b0170e303418c1388ec1b41
 	}
 
 	void CreateWallMesh () {

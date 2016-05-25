@@ -13,6 +13,7 @@ labels:
 - Animation
 - Motion
 - RAIN
+<<<<<<< HEAD
 PluginImporter:
   serializedVersion: 1
   iconMap: {}
@@ -29,3 +30,10 @@ PluginImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+=======
+MonoAssemblyImporter:
+  serializedVersion: 1
+  iconMap: {}
+  executionOrder: {}
+  userData: 
+>>>>>>> f9cea237475948c76b0170e303418c1388ec1b41

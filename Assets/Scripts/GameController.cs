@@ -5,7 +5,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using SocketIO;
-
+using RAIN.Navigation;
+using RAIN.Navigation.Targets;
+using RAIN.Core;
+using RAIN.BehaviorTrees;
+using RAIN.Minds;
+using RAIN.Memory;
+using RAIN;
 
 public class GameController : MonoBehaviour {
 
@@ -34,6 +40,9 @@ public class GameController : MonoBehaviour {
 		player = GameObject.Find ("Player");
 		playerComponent = player.GetComponent<Player> ();
 		player.SetActive (false);
+		playerComponent.GetComponentInChildren<NavigationTargetRig>().Target.MountPoint = playerComponent.transform;
+		playerComponent.GetComponentInChildren<NavigationTargetRig>().Target.TargetName = "NavTarget";
+
 
 		ui.SetActive (true);
 

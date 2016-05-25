@@ -1,0 +1,6 @@
+<behaviortree version="1.1" repeatuntil="" name="test2" debugbreak="False">
+  <sequencer usepriorities="False" repeatuntil="" name="root" debugbreak="False">
+    <move turnspeed="" repeatuntil="success" priority="" name="move" movetarget="Player" movespeed="100" facetarget="" debugbreak="False" closeenoughdistance="" closeenoughangle="" />
+  </sequencer>
+  <move turnspeed="" repeatuntil="success" priority="" name="move" movetarget="Player" movespeed="100" facetarget="" debugbreak="False" closeenoughdistance="" closeenoughangle="" />
+</behaviortree>

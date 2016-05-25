@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 664a80e52232acc499632d46f04aa7ae
 folderAsset: yes
 timeCreated: 1464180332
@@ -7,3 +8,9 @@ DefaultImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+=======
+guid: a11ac10befe732446b5d5b420d907139
+folderAsset: yes
+DefaultImporter:
+  userData: 
+>>>>>>> f9cea237475948c76b0170e303418c1388ec1b41
