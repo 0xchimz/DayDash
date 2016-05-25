@@ -30,7 +30,7 @@ public class EnemyManager : MonoBehaviour {
 	{
 
 		yield return new WaitForSeconds(spawnTime);
-		if (meshGen.isNavMeshDone)
+		if (GameController.instance.isGamePlay)
 		{
 			InvokeRepeating("Spawn", spawnTime, spawnTime);
 		} else { StartCoroutine(navMeshCheck()); }

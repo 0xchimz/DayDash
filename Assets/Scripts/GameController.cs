@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -17,7 +16,7 @@ public class GameController : MonoBehaviour {
 
 	public readonly int CONNECTING = 0, CONNECTED = 1, FINDING_MATCH = 2, JOINED = 3, STARTING = 4;
 	public static GameController instance;
-	SocketIOComponent socket;
+	public SocketIOComponent socket;
 
 	private GameObject player;
 	private Player playerComponent;
@@ -30,9 +29,9 @@ public class GameController : MonoBehaviour {
 	public GameObject ui;
 	public GameObject map;
 	public ItemList itemList;
+	public bool isGamePlay = false;
 
-	void Awake ()
-	{
+	void Awake () {
 		instance = this;
 	}
 
@@ -43,7 +42,6 @@ public class GameController : MonoBehaviour {
 		playerComponent.GetComponentInChildren<NavigationTargetRig>().Target.MountPoint = playerComponent.transform;
 		playerComponent.GetComponentInChildren<NavigationTargetRig>().Target.TargetName = "NavTarget";
 
-
 		ui.SetActive (true);
 
 		GameObject go = GameObject.Find("SocketIO");
@@ -52,11 +50,12 @@ public class GameController : MonoBehaviour {
 		socket.On ("USER_CONNECTED", onUserConnected);
 		socket.On ("JOIN_RESPONSE", onJoined);
 		socket.On ("START_GAME", onStart);
+		socket.On ("PLAY_GAME", onPlay);
 		socket.On ("GENERATE_ITEM", itemInfo);
 		socket.On ("EVENT", onEvent);
 		socket.On ("USER_DISCONNECTED", onUserDisconnected );
 
-		//socket.On ("error", onError);
+		socket.On ("error", onError);
 		socket.On ("connect", onUserConnected);
 
 		statusGame = CONNECTING;
@@ -82,6 +81,8 @@ public class GameController : MonoBehaviour {
 	void onError(SocketIOEvent e){
 		statusGame = CONNECTING;
 		Debug.Log ("Connect error received: " + e.name + " " + e.data);
+		ui.SetActive (true);
+		player.SetActive (false);
 	}
 
 	void itemInfo(SocketIOEvent e){
@@ -135,11 +136,18 @@ public class GameController : MonoBehaviour {
 		Debug.Log ("Disconnect");
 	}
 
-	void onStart (SocketIOEvent obj){
-		statusGame = STARTING;
-		Debug.Log ("Starting Game");
+	void onPlay (SocketIOEvent obj){
 		ui.SetActive (false);
 		player.SetActive (true);
+		this.isGamePlay = true;
+	}
+
+	void onStart (SocketIOEvent obj){
+		statusGame = STARTING;
+		socket.Emit("GET_ITEM");
+		Debug.Log ("Starting Game");
+		MapGenerator genMapComponent = map.GetComponent<MapGenerator> ();
+		genMapComponent.GenerateMap ();
 	}
 
 	void onJoined (SocketIOEvent obj) {

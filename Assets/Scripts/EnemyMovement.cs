@@ -12,10 +12,10 @@ public class EnemyMovement : MonoBehaviour
 	void Awake ()
 	{
 		// Set up the references.
-		player = GameObject.FindGameObjectWithTag ("Player").transform;
+		//player = GameObject.FindGameObjectWithTag ("Player").transform;
 		//playerHealth = player.GetComponent <PlayerHealth> ();
 		//enemyHealth = GetComponent <EnemyHealth> ();
-		nav = GetComponent <NavMeshAgent> ();
+		//nav = GetComponent <NavMeshAgent> ();
 	}
 
 

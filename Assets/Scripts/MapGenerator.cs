@@ -23,7 +23,7 @@ public class MapGenerator : MonoBehaviour {
 	int[,] map;
 
 	void Start () {
-		GenerateMap ();
+//		GenerateMap ();
 	}
 
 	void Update () {
@@ -32,7 +32,7 @@ public class MapGenerator : MonoBehaviour {
 //		}
 	}
 
-	void GenerateMap () {
+	public void GenerateMap () {
 		map = new int[width, height];
 		RandomFillMap ();
 

@@ -28,7 +28,6 @@ public class MeshGenerator : MonoBehaviour {
 
 	private int _threadCount = 4;
 	NavMeshRig tRig;
-	public bool isNavMeshDone = false;
 
 	public void GenerateMesh (int[,] map, float squareSize) {
 
@@ -75,11 +74,12 @@ public class MeshGenerator : MonoBehaviour {
 
 			yield return new WaitForSeconds(1);
 		}
-		isNavMeshDone = true;
+		//isNavMeshDone = true;
 		float endTime = Time.time;
 		Debug.Log("NavMesh generated in " + (endTime - startTime) + "s");
 		gameObject.GetComponentInChildren<RAIN.Navigation.NavMesh.NavMeshRig>().NavMesh.RegisterNavigationGraph();
 		gameObject.GetComponentInChildren<RAIN.Navigation.NavMesh.NavMeshRig>().Awake();
+		GameController.instance.socket.Emit ("GAME_STATUS_READY");
 	}
 
 	void CreateWallMesh () {
