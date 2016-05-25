@@ -19,8 +19,8 @@ public class EnemyManager : MonoBehaviour {
 	private MeshGenerator meshGen;
 	// Use this for initialization
 	void Start () {
-		GameObject tmp = GameObject.Find ("Map Generator");
-		meshGen = tmp.GetComponent<MeshGenerator> ();
+		//GameObject tmp = GameObject.Find ("Map Generator");
+		//meshGen = tmp.GetComponent<MeshGenerator> ();
 		// Call the Spawn function after a delay of the spawnTime and then continue to call after the same amount of time.
 		//InvokeRepeating("Spawn", spawnTime, spawnTime);
 		StartCoroutine(navMeshCheck());
