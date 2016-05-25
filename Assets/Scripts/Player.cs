@@ -19,12 +19,12 @@ public class Player : MonoBehaviour {
 	{
 		if (gameElement.tag == "Key") {
 			Debug.Log ("Player got key");
-			gameElement.gameObject.active = false;
+			gameElement.gameObject.SetActive(false);
 			socket.Emit ("FOUND_KEY");
 		}
 		if (gameElement.tag == "Door") {
 			Debug.Log ("Player on the door");
-			gameElement.gameObject.active = false;
+			gameElement.gameObject.SetActive(false);
 		}	
 	}
 

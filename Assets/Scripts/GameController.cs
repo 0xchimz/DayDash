@@ -10,7 +10,7 @@ using SocketIO;
 public class GameController : MonoBehaviour {
 
 	public readonly int CONNECTING = 0, CONNECTED = 1, FINDING_MATCH = 2, JOINED = 3, STARTING = 4;
-
+	public static GameController instance;
 	SocketIOComponent socket;
 
 	private GameObject player;
@@ -18,12 +18,17 @@ public class GameController : MonoBehaviour {
 	private Room room;
 	private int statusGame;
 	private ArrayList gameItems = new ArrayList();
+	private MessageText msgText;
 
 	public Text status;
 	public GameObject ui;
 	public GameObject map;
-
 	public ItemList itemList;
+
+	void Awake ()
+	{
+		instance = this;
+	}
 
 	void Start () {
 		player = GameObject.Find ("Player");
@@ -39,6 +44,7 @@ public class GameController : MonoBehaviour {
 		socket.On ("JOIN_RESPONSE", onJoined);
 		socket.On ("START_GAME", onStart);
 		socket.On ("GENERATE_ITEM", itemInfo);
+		socket.On ("EVENT", onEvent);
 		socket.On ("USER_DISCONNECTED", onUserDisconnected );
 
 		//socket.On ("error", onError);
@@ -47,6 +53,8 @@ public class GameController : MonoBehaviour {
 		statusGame = CONNECTING;
 
 		status.text = "CONNECTING TO SERVER...";
+
+		msgText = GetComponent<MessageText> ();
 	}
 
 	// Update is called once per frame
@@ -76,6 +84,18 @@ public class GameController : MonoBehaviour {
 			items [i] =  item.Substring(1, item.Length - 2);
 		}
 		generateItem (items);
+	}
+
+	void onEvent(SocketIOEvent e){
+		string evn = e.data.GetField ("name").ToString();
+		string tmp = evn.Substring(1, evn.Length - 2);
+		Debug.Log (tmp);
+		if (tmp.Equals ("ENABLE_DOOR")) {
+			Debug.Log ("Enable the door");
+			msgText.setText("THE DOOR IS OPEN, FIND THE DOOR TO ESCAPE!");
+			msgText.show();
+		
+		}
 	}
 
 	void generateItem(string[] items){
@@ -135,7 +155,7 @@ public class GameController : MonoBehaviour {
 		Debug.Log ("Desconnect from server.");
 	}
 
-	void onUserConnected (SocketIOEvent obj) {
+	public void onUserConnected (SocketIOEvent obj) {
 		Debug.Log ("Connected.");
 		statusGame = CONNECTED;
 		FindingMatch ();
