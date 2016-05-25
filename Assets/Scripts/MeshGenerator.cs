@@ -9,6 +9,7 @@ public class MeshGenerator : MonoBehaviour {
 
 	public SquareGrid squareGrid;
 	public MeshFilter walls;
+	public MeshFilter land;
 
 	List<Vector3> vertices;
 	List<int> triangles;
@@ -35,11 +36,14 @@ public class MeshGenerator : MonoBehaviour {
 		}
 
 		Mesh mesh = new Mesh ();
-		GetComponent<MeshFilter> ().mesh = mesh;
+		land.mesh = mesh;
 
 		mesh.vertices = vertices.ToArray ();
 		mesh.triangles = triangles.ToArray ();
 		mesh.RecalculateNormals ();
+
+		MeshCollider landCollider = walls.gameObject.AddComponent<MeshCollider> ();
+		landCollider.sharedMesh = mesh;
 
 		CreateWallMesh ();
 	}
