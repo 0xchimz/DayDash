@@ -31,9 +31,8 @@ public class PlayerMovement : MonoBehaviour
 		transform.Find ("Pet").gameObject.SetActive(false);
 
 		Character = transform.Find ("Character").gameObject;
-		//Magic = GameObject.Find ("MagicAttack");
 
-		Debug.Log (Magic + " found. ");
+		//Debug.Log (Magic + " found. ");
 
 		setInitialAttitude ();
 
@@ -147,14 +146,8 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	void Attack() {
-
-
-		Debug.Log ("Shazaaaamm!!");
-
 		magicDirection = new Vector3 (transform.position.x, -1f, transform.position.z);
-
-		Debug.Log ("DSSASA:  " + transform.forward.y);
-		Instantiate(Magic, magicDirection+(transform.forward*3), transform.rotation);
+		Instantiate(Magic, magicDirection+(transform.forward*3), transform.rotation);		//Create Magic object
 	}
 
 }

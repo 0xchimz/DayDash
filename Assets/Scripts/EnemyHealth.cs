@@ -54,7 +54,7 @@ public class EnemyHealth : MonoBehaviour
 		currentHealth -= amount;
 
 		anim.SetTrigger("Take Damage");
-		Debug.Log ("Got hit, current HP = " + currentHealth );
+		Debug.Log ("Enemy HP = " + currentHealth );
 
 
 		// If the current health is less than or equal to zero...

@@ -47,7 +47,7 @@ public class EnemyAttack : MonoBehaviour
 		if(other.gameObject == player)
 		{
 
-			Debug.Log ("Player out of sight");
+			//Debug.Log ("Player out of sight");
 			// ... the player is no longer in range.
 			playerInRange = false;
 		}
@@ -63,23 +63,22 @@ public class EnemyAttack : MonoBehaviour
 		if(timer >= timeBetweenAttacks && playerInRange && enemyHealth.currentHealth > 0)
 		{
 			// ... attack.
-			Debug.Log("Attack!");
-			Attack ();
+			PerformAttack ();
 		}
 
 		// If the player has zero or less health...
 
-		/*
+
 		if(playerHealth.currentHealth <= 0)
 		{
-			// ... tell the animator the player is dead.
+			anim.speed = 0;
 		//	anim.SetTrigger ("PlayerDead");
 		}
-		*/
+
 	}
 
 
-	void Attack ()
+	void PerformAttack ()
 	{
 		// Reset the timer.
 		timer = 0f;
@@ -89,7 +88,11 @@ public class EnemyAttack : MonoBehaviour
 		{
 			anim.SetTrigger ("Bite Attack");
 			// ... damage the player.
-			playerHealth.TakeDamage (attackDamage);
+			//Bite();
 		}
+	}
+
+	void Bite(){
+		playerHealth.TakeDamage (attackDamage);
 	}
 }
