@@ -10,10 +10,7 @@ public class MagicAttack : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		enemy = GameObject.FindGameObjectWithTag ("Enemy");
-		enemyHealth = enemy.GetComponent <EnemyHealth> ();
-
-		//Debug.Log (enemyHealth + " found.");
+		Debug.Log (enemyHealth + " found.");
 	}
 	
 	// Update is called once per frame
@@ -26,8 +23,10 @@ public class MagicAttack : MonoBehaviour {
 		if (other.tag == "Enemy") {
 			Debug.Log ("PLAYER used DARK CIRCLE! \nIt's not very effective. . . ");
 
-			enemyHealth.TakeDamage (damage);
+			enemy = other.gameObject;
+			enemyHealth = enemyHealth = enemy.GetComponent <EnemyHealth> ();
 
+			enemyHealth.TakeDamage (damage);
 
 		} 
 

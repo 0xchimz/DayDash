@@ -51,6 +51,7 @@ public class EnemyHealth : MonoBehaviour
 		//enemyAudio.Play ();
 
 		// Reduce the current health by the amount of damage sustained.
+		anim.SetTrigger("Take Damage");
 		currentHealth -= amount;
 
 		Debug.Log ("Got hit, current HP = " + currentHealth );
