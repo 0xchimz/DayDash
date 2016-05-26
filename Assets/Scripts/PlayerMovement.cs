@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
 	float timer;                			// A timer to determine when to fire.
 	public float timeBetweenAttack = 0.5f; 	// The time between each shot.
 
+	public GameObject Magic; 
+
 
 	void Awake ()
 	{
@@ -27,6 +29,9 @@ public class PlayerMovement : MonoBehaviour
 		transform.Find ("Pet").gameObject.SetActive(false);
 
 		Character = transform.Find ("Character").gameObject;
+		//Magic = GameObject.Find ("MagicAttack");
+
+		Debug.Log (Magic + " found. ");
 
 		setInitialAttitude ();
 
@@ -79,8 +84,6 @@ public class PlayerMovement : MonoBehaviour
 
 			// Reset the timer.
 			timer = 0f;
-
-			//Debug.Log("Attack !!@@!!");
 			anim.SetTrigger ("Attack");
 
 			//Attack ();
@@ -145,6 +148,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 		Debug.Log ("Shazaaaamm!!");
+		Instantiate(Magic, transform.position+(transform.forward*3), transform.rotation);
 	}
 
 }
