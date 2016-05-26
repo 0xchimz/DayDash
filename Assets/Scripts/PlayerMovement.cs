@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
 
 	public GameObject Magic; 
 
+	private Vector3 magicDirection;
+
 
 	void Awake ()
 	{
@@ -148,7 +150,11 @@ public class PlayerMovement : MonoBehaviour
 
 
 		Debug.Log ("Shazaaaamm!!");
-		Instantiate(Magic, transform.position+(transform.forward*3), transform.rotation);
+
+		magicDirection = new Vector3 (transform.position.x, -1f, transform.position.z);
+
+		Debug.Log ("DSSASA:  " + transform.forward.y);
+		Instantiate(Magic, magicDirection+(transform.forward*3), transform.rotation);
 	}
 
 }
