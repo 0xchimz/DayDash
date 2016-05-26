@@ -76,10 +76,14 @@ public class PlayerMovement : MonoBehaviour
 		//Check Attack
 		if(Input.GetButton ("Fire1") && timer >= timeBetweenAttack)
 		{
-			Debug.Log("Attack !!@@!!");
+
+			// Reset the timer.
+			timer = 0f;
+
+			//Debug.Log("Attack !!@@!!");
 			anim.SetTrigger ("Attack");
 
-			Attack ();
+			//Attack ();
 			//HopOnPet ();
 			//transform.Find ("Pet").gameObject.SetActive(true);
 			//anim.SetBool ("IsWalking", true);
@@ -128,11 +132,7 @@ public class PlayerMovement : MonoBehaviour
 	void setInitialAttitude() {
 		initialAttitude = Input.acceleration;
 	}
-
-	void instantStop() {
 		
-	}
-
 	void HopOnPet() {
 		Character.transform.position = new Vector3(Character.transform.position.x, 0.5f, Character.transform.position.z); 
 	}
@@ -142,8 +142,9 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	void Attack() {
-		// Reset the timer.
-		timer = 0f;
+
+
+		Debug.Log ("Shazaaaamm!!");
 	}
 
 }
