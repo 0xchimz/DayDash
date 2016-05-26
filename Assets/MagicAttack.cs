@@ -10,7 +10,7 @@ public class MagicAttack : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Debug.Log (enemyHealth + " found.");
+		//Debug.Log (enemyHealth + " found.");
 	}
 	
 	// Update is called once per frame
