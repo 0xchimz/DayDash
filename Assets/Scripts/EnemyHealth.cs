@@ -40,7 +40,7 @@ public class EnemyHealth : MonoBehaviour
 	}
 
 
-	public void TakeDamage (int amount, Vector3 hitPoint)
+	public void TakeDamage (int amount)
 	{
 		// If the enemy is dead...
 		if(isDead)
@@ -48,16 +48,18 @@ public class EnemyHealth : MonoBehaviour
 			return;
 
 		// Play the hurt sound effect.
-		enemyAudio.Play ();
+		//enemyAudio.Play ();
 
 		// Reduce the current health by the amount of damage sustained.
 		currentHealth -= amount;
 
+		Debug.Log ("Got hit, current HP = " + currentHealth );
+
 		// Set the position of the particle system to where the hit was sustained.
-		hitParticles.transform.position = hitPoint;
+		//hitParticles.transform.position = hitPoint;
 
 		// And play the particles.
-		hitParticles.Play();
+		//hitParticles.Play();
 
 		// If the current health is less than or equal to zero...
 		if(currentHealth <= 0)
@@ -80,8 +82,8 @@ public class EnemyHealth : MonoBehaviour
 		anim.SetTrigger ("Dead");
 
 		// Change the audio clip of the audio source to the death clip and play it (this will stop the hurt clip playing).
-		enemyAudio.clip = deathClip;
-		enemyAudio.Play ();
+		//enemyAudio.clip = deathClip;
+		//enemyAudio.Play ();
 	}
 
 
