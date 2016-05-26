@@ -6,12 +6,12 @@ public class EnemyHealth : MonoBehaviour
 	public int currentHealth;                   // The current health the enemy has.
 	private float sinkSpeed = 5f;              // The speed at which the enemy sinks through the floor when dead.
 	public int scoreValue = 10;                 // The amount added to the player's score when the enemy dies.
-	public AudioClip deathClip;                 // The sound to play when the enemy dies.
+	//public AudioClip deathClip;                 // The sound to play when the enemy dies.
 
 
 	Animator anim;                              // Reference to the animator.
-	AudioSource enemyAudio;                     // Reference to the audio source.
-	ParticleSystem hitParticles;                // Reference to the particle system that plays when the enemy is damaged.
+	//AudioSource enemyAudio;                     // Reference to the audio source.
+	//ParticleSystem hitParticles;                // Reference to the particle system that plays when the enemy is damaged.
 	BoxCollider boxCollider;            // Reference to the capsule collider.
 	bool isDead;                                // Whether the enemy is dead.
 	bool isSinking;                             // Whether the enemy has started sinking through the floor.
@@ -21,8 +21,10 @@ public class EnemyHealth : MonoBehaviour
 	{
 		// Setting up the references.
 		anim = GetComponent <Animator> ();
-		enemyAudio = GetComponent <AudioSource> ();
-		hitParticles = GetComponentInChildren <ParticleSystem> ();
+		anim.speed = 2;
+
+		//enemyAudio = GetComponent <AudioSource> ();
+		//hitParticles = GetComponentInChildren <ParticleSystem> ();
 		boxCollider = GetComponent <BoxCollider> ();
 
 		// Setting the current health when the enemy first spawns.
@@ -48,12 +50,16 @@ public class EnemyHealth : MonoBehaviour
 			return;
 
 		// Reduce the current health by the amount of damage sustained.
-		anim.SetTrigger("Take Damage");
+
 		currentHealth -= amount;
+
+		anim.SetTrigger("Take Damage");
 		Debug.Log ("Got hit, current HP = " + currentHealth );
+
 
 		// If the current health is less than or equal to zero...
 		if(currentHealth <= 0){
+			anim.speed = 1;
 			Death ();
 		}
 	}

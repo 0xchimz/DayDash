@@ -34,7 +34,7 @@ public class EnemyAttack : MonoBehaviour
 		// If the entering collider is the player...
 		if(other.gameObject == player)
 		{
-			Debug.Log ("Player Collide");
+			
 			// ... the player is in range.
 			playerInRange = true;
 		}
@@ -46,6 +46,8 @@ public class EnemyAttack : MonoBehaviour
 		// If the exiting collider is the player...
 		if(other.gameObject == player)
 		{
+
+			Debug.Log ("Player out of sight");
 			// ... the player is no longer in range.
 			playerInRange = false;
 		}
