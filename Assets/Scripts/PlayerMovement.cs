@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
 	private int BASE_SPEED;
 	private Vector3 initialAttitude;
 
+	GameObject Character; 
+
 	void Awake ()
 	{
 		// Create a layer mask for the floor layer.
@@ -20,6 +22,9 @@ public class PlayerMovement : MonoBehaviour
 		anim = GetComponent <Animator> ();
 		playerRigidbody = GetComponent <Rigidbody> ();
 		transform.Find ("Pet").gameObject.SetActive(false);
+
+		Character = transform.Find ("Character").gameObject;
+		Debug.Log ("\"" + Character + "\"  found.");
 
 		setInitialAttitude ();
 
@@ -53,21 +58,28 @@ public class PlayerMovement : MonoBehaviour
 		Animating (h, v);
 		if ( !anim.GetBool ("IsWalking")) {
 			transform.Find ("Pet").gameObject.SetActive(false); //no pet when player stand still
+
+			// Character stand on the ground
+			Character.transform.position = new Vector3(Character.transform.position.x, 0f, Character.transform.position.z); 
 		}
 	}
 
 	void Move (float h, float v)
 	{
 		// Set the movement vector based on the axis input.
-		movement.Set (h, 0f, v);
+		movement.Set (h, 0f, v); // also move up character a liitle bit to match the animation
 
 		// Normalise the movement vector and make it proportional to the speed per second.
 		movement = movement.normalized * speed * Time.deltaTime;
 		if (h != 0 || v != 0) {
 			Turning (movement);
+
+			//Set Character position to match the animation
+			Character.transform.position = new Vector3(Character.transform.position.x, 0.5f, Character.transform.position.z); 
+			Debug.Log ("Move character UP to " + Character.transform.position.y);
 		}
 
-		// Move the player to it's current position plus the movement.
+
 		playerRigidbody.MovePosition (transform.position + movement);
 	}
 
@@ -92,6 +104,10 @@ public class PlayerMovement : MonoBehaviour
 	void setInitialAttitude() {
 		initialAttitude = Input.acceleration;
 		//Debug.Log ("Initial x = " + initialAttitude.x + ", initial y = " + initialAttitude.y);
+	}
+
+	void instantStop() {
+		
 	}
 
 }
