@@ -285,7 +285,7 @@ public class GameController : MonoBehaviour {
 		return newString [1];
 	}
 
-	public void onDead(){
+	public void onDead(SocketIOEvent e){
 
 		GameObject[] objects = GameObject.FindGameObjectsWithTag ("Environment");
 		for (int i = 0; i < objects.Length; i++) {
@@ -311,7 +311,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void playerDead () {
-		onDead();
+		onDead(null);
 		socket.Emit ("DEAD");
 	}
 }
