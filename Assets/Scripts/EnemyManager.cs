@@ -16,7 +16,7 @@ public class EnemyManager : MonoBehaviour {
 	public GameObject blueEnemy;
 	public GameObject redEnemy;
 
-	public float spawnTime = 5f;
+	public float spawnTime = 20f;
 
 	private MeshGenerator meshGen;
 	PositionRandomizer randomizer;
@@ -39,7 +39,7 @@ public class EnemyManager : MonoBehaviour {
 	}
 
 	void Spawn () {
-		if (spawnTime < 20.0f) {
+		if (spawnTime < 50.0f) {
 			spawnTime += 1.0f;
 		}
 		// If the player has no health left...
