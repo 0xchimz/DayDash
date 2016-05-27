@@ -134,14 +134,14 @@ public class GameController : MonoBehaviour {
 
 		Debug.Log ("Generate Randomizer");
 		PositionRandomizer randomizer = map.GetComponent<PositionRandomizer> ();
-	
-		player.transform.position = randomizer.RandomPosition (PositionRandomizer.PLAYER);
 
 		ItemsGenerator itemsGen = items.GetComponent<ItemsGenerator> ();
 		itemsGen.GenerateItems (randomizer, itemList);
 
 		EnvironmentGenerator enviGen = environment.GetComponent<EnvironmentGenerator> ();
 		enviGen.GenerateEnvironment (randomizer);
+
+		player.transform.position = randomizer.RandomPosition (PositionRandomizer.PLAYER);
 
 		EnemyManager enemyManager = enemies.GetComponent<EnemyManager> ();
 		enemyManager.CreateEnemyManager (randomizer);
@@ -184,6 +184,7 @@ public class GameController : MonoBehaviour {
 
 	void landingPage () {
 		statusGame = LANDING;
+		ui.SetActive (true);
 		input.gameObject.SetActive (true);
 		btn.gameObject.SetActive (true);
 

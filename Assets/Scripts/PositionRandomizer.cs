@@ -4,7 +4,7 @@ using System.Collections;
 public class PositionRandomizer : MonoBehaviour {
 
 	public const int LAND_TYPE = 0;
-	public const int ENVI = -1, MONSTER = 0, PLAYER = 1, ITEM = 1;
+	public const int ENVI = -1, MONSTER = 0, PLAYER = -1, ITEM = 1;
 
 	public GameObject key;
 	public GameObject door;
@@ -39,11 +39,11 @@ public class PositionRandomizer : MonoBehaviour {
 			if (map [x, y] == 0 && mark >= 0) {
 				if (mark != 0)
 					map [x, y] = 99;
-				return new Vector3 (-mapWidth / 2 + x * squareSize + squareSize / 2, 0.1f, -mapHeight / 2 + y * squareSize + squareSize / 2);
+				return new Vector3 (-mapWidth / 2 + x * squareSize + squareSize / 2, 0.0f, -mapHeight / 2 + y * squareSize + squareSize / 2);
 				available = true;
 			} else if (map [x, y] == 0 && mark < 0 && isNearbyAvailable (x, y)) {
 				map [x, y] = 99;
-				return new Vector3 (-mapWidth / 2 + x * squareSize + squareSize / 2, 0.1f, -mapHeight / 2 + y * squareSize + squareSize / 2);
+				return new Vector3 (-mapWidth / 2 + x * squareSize + squareSize / 2, 0.0f, -mapHeight / 2 + y * squareSize + squareSize / 2);
 				available = true;
 			}
 		}

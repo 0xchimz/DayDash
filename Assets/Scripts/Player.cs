@@ -20,6 +20,13 @@ public class Player : MonoBehaviour {
 		gameObject.GetComponentInChildren<NavigationTargetRig> ().Target.TargetName = "NavTarget";
 	}
 
+	void Update () {
+		Debug.Log ((transform.position.y < -10.0));
+		if (transform.position.y < -10.0f) {
+			GameController.instance.playerDead ();
+		}
+	}
+
 	void OnCollisionEnter (Collision e){
 		if (e.gameObject.tag == "Door") {
 			socket.Emit ("PLAYER_ENTER_DOOR");
