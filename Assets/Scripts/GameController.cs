@@ -64,6 +64,7 @@ public class GameController : MonoBehaviour {
 		socket.On ("EVENT", onEvent);
 		socket.On ("USER_DISCONNECTED", onUserDisconnected);
 		socket.On ("NEXT_MATCH", onNextMatch);
+		socket.On ("DEAD", onDead);
 
 		socket.On ("error", onError);
 		socket.On ("connect", onUserConnected);
@@ -284,7 +285,33 @@ public class GameController : MonoBehaviour {
 		return newString [1];
 	}
 
-	public void playerDead () {
+	public void onDead(){
+
+		GameObject[] objects = GameObject.FindGameObjectsWithTag ("Environment");
+		for (int i = 0; i < objects.Length; i++) {
+			Destroy (objects [i]);
+		}
+
+		GameObject[] _enemies = GameObject.FindGameObjectsWithTag ("Enemy");
+		for (int i = 0; i < _enemies.Length; i++) {
+			Destroy (_enemies [i]);
+		}
+
+		GameObject[] doors = GameObject.FindGameObjectsWithTag ("Door");
+		for (int i = 0; i < doors.Length; i++) {
+			Destroy (doors [i]);
+		}
+
+		GameObject[] keys = GameObject.FindGameObjectsWithTag ("Key");
+		for (int i = 0; i < keys.Length; i++) {
+			Destroy (keys [i]);
+		}
+
 		landingPage ();
+	}
+
+	public void playerDead () {
+		onDead();
+		socket.Emit ("DEAD");
 	}
 }
