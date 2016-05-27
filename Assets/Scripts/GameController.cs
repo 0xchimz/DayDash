@@ -205,6 +205,9 @@ public class GameController : MonoBehaviour {
 		btn.gameObject.SetActive (true);
 
 		btn.onClick.AddListener (delegate {
+			status.text = "Saving...";
+			btn.gameObject.SetActive(false);
+			input.gameObject.SetActive(false);
 			clickFindMatch ();	
 		});
 	}
@@ -214,14 +217,12 @@ public class GameController : MonoBehaviour {
 			UpdateUserTitleDisplayNameRequest request = new UpdateUserTitleDisplayNameRequest ();
 			request.DisplayName = input.text;
 			PlayFabClientAPI.UpdateUserTitleDisplayName (request, (UpdateUserTitleDisplayNameResult result) => {
-				status.text = "Saving...";
 				Debug.Log ("Update Display Success");
-				input.gameObject.SetActive (false);
-				btn.gameObject.SetActive (false);
 				FindingMatch ();
 			}, (PlayFabError error) => {
 				status.text = "Cannot update display name...";
 				Debug.Log ("Update Display Error");
+				FindingMatch ();
 			});
 		}
 	}
