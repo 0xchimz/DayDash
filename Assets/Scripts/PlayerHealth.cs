@@ -41,7 +41,7 @@ public class PlayerHealth : MonoBehaviour
 		{
 			// ... set the colour of the damageImage to the flash colour.
 			//damageImage.color = flashColour;
-			Debug.Log("Ouch!");
+			Debug.Log ("Ouch!  Current HP = " + currentHealth);
 		}
 		// Otherwise...
 		else
@@ -62,8 +62,6 @@ public class PlayerHealth : MonoBehaviour
 
 		// Reduce the current health by the damage amount.
 		currentHealth -= amount;
-		Debug.Log ("Current HP = " + currentHealth);
-
 		// Set the health bar's value to the current health.
 		//healthSlider.value = currentHealth;
 

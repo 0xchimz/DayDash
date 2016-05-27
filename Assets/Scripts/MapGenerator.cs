@@ -7,6 +7,7 @@ public class MapGenerator : MonoBehaviour {
 
 	public const int WALL_THRESHOLD_SIZE = 50;
 	public const int ROOM_THRESHOLD_SIZE = 50;
+	public const int SQUARE_SIZE = 1;
 	public const int BORDER_SIZE = 1;
 	public const bool FORCE_ACCESS = false;
 	public const int PATH_RADIUS = 2;
@@ -22,17 +23,7 @@ public class MapGenerator : MonoBehaviour {
 
 	int[,] map;
 
-	void Start () {
-//		GenerateMap ();
-	}
-
-	void Update () {
-//		if (Input.GetMouseButtonDown (0)) {
-//			GenerateMap ();
-//		}
-	}
-
-	public void GenerateMap () {
+	public void GenerateMap (JSONObject[] items) {
 		map = new int[width, height];
 		RandomFillMap ();
 
@@ -56,7 +47,10 @@ public class MapGenerator : MonoBehaviour {
 		}
 
 		MeshGenerator meshGen = GetComponent<MeshGenerator> ();
-		meshGen.GenerateMesh (borderedMap, 1);
+		meshGen.GenerateMesh (borderedMap, SQUARE_SIZE);
+
+		ItemsGenerator itemsGen = GetComponent<ItemsGenerator> ();
+		itemsGen.GenerateItems (borderedMap, SQUARE_SIZE, items);
 	}
 
 	void ProcessMap () {

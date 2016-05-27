@@ -13,29 +13,27 @@ public class Player : MonoBehaviour {
 
 	void Start () {
 
-		GameObject go = GameObject.Find("SocketIO");
-		socket = go.GetComponent<SocketIOComponent>();
+		GameObject go = GameObject.Find ("SocketIO");
+		socket = go.GetComponent<SocketIOComponent> ();
 
-		gameObject.GetComponentInChildren<NavigationTargetRig>().Target.MountPoint = gameObject.transform;
-		gameObject.GetComponentInChildren<NavigationTargetRig>().Target.TargetName = "NavTarget";
+		gameObject.GetComponentInChildren<NavigationTargetRig> ().Target.MountPoint = gameObject.transform;
+		gameObject.GetComponentInChildren<NavigationTargetRig> ().Target.TargetName = "NavTarget";
 	}
 
-	void OnTriggerEnter (Collider gameElement)
-	{
+	void OnTriggerEnter (Collider gameElement) {
 		if (gameElement.tag == "Key") {
 			Debug.Log ("Player got key");
-			gameElement.gameObject.SetActive(false);
+			gameElement.gameObject.SetActive (false);
 			socket.Emit ("FOUND_KEY");
 		}
 		if (gameElement.tag == "Door") {
 			Debug.Log ("Player on the door");
-			gameElement.gameObject.SetActive(false);
-		}	
+			gameElement.gameObject.SetActive (false);
+		}
 	}
 
-	public void FoundKey(SocketIOEvent e)
-	{
-		Debug.Log("Hey everyone, I found a key!");
+	public void FoundKey (SocketIOEvent e) {
+		Debug.Log ("Hey everyone, I found a key!");
 		socket.Emit ("aKey");
 	}
 

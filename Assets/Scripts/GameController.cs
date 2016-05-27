@@ -22,7 +22,7 @@ public class GameController : MonoBehaviour {
 	private Player playerComponent;
 	private Room room;
 	private int statusGame;
-	private ArrayList gameItems = new ArrayList();
+	private ArrayList gameItems = new ArrayList ();
 	private MessageText msgText;
 
 	public Text status;
@@ -39,13 +39,13 @@ public class GameController : MonoBehaviour {
 		player = GameObject.Find ("Player");
 		playerComponent = player.GetComponent<Player> ();
 		player.SetActive (false);
-		playerComponent.GetComponentInChildren<NavigationTargetRig>().Target.MountPoint = playerComponent.transform;
-		playerComponent.GetComponentInChildren<NavigationTargetRig>().Target.TargetName = "NavTarget";
+		playerComponent.GetComponentInChildren<NavigationTargetRig> ().Target.MountPoint = playerComponent.transform;
+		playerComponent.GetComponentInChildren<NavigationTargetRig> ().Target.TargetName = "NavTarget";
 
 		ui.SetActive (true);
 
-		GameObject go = GameObject.Find("SocketIO");
-		socket = go.GetComponent<SocketIOComponent>();
+		GameObject go = GameObject.Find ("SocketIO");
+		socket = go.GetComponent<SocketIOComponent> ();
 
 		socket.On ("USER_CONNECTED", onUserConnected);
 		socket.On ("JOIN_RESPONSE", onJoined);
@@ -53,7 +53,7 @@ public class GameController : MonoBehaviour {
 		socket.On ("PLAY_GAME", onPlay);
 		socket.On ("GENERATE_ITEM", itemInfo);
 		socket.On ("EVENT", onEvent);
-		socket.On ("USER_DISCONNECTED", onUserDisconnected );
+		socket.On ("USER_DISCONNECTED", onUserDisconnected);
 
 		socket.On ("error", onError);
 		socket.On ("connect", onUserConnected);
@@ -78,36 +78,36 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	void onError(SocketIOEvent e){
+	void onError (SocketIOEvent e) {
 		statusGame = CONNECTING;
 		Debug.Log ("Connect error received: " + e.name + " " + e.data);
 		ui.SetActive (true);
 		player.SetActive (false);
 	}
 
-	void itemInfo(SocketIOEvent e){
+	void itemInfo (SocketIOEvent e) {
 		Debug.Log ("Generate Item");
 		JSONObject[] arr = e.data.GetField ("data").list.ToArray ();
 		string[] items = new string[arr.Length];
 		for (int i = 0; i < arr.Length; i++) {
 			string item = arr [i].ToString ();
-			items [i] =  item.Substring(1, item.Length - 2);
+			items [i] = item.Substring (1, item.Length - 2);
 		}
 		generateItem (items);
 	}
 
-	void onEvent(SocketIOEvent e){
-		string evn = e.data.GetField ("name").ToString();
-		string tmp = evn.Substring(1, evn.Length - 2);
+	void onEvent (SocketIOEvent e) {
+		string evn = e.data.GetField ("name").ToString ();
+		string tmp = evn.Substring (1, evn.Length - 2);
 		Debug.Log (tmp);
 		if (tmp.Equals ("ENABLE_DOOR")) {
 			Debug.Log ("Enable the door");
-			msgText.setText("THE DOOR IS OPEN, FIND THE DOOR TO ESCAPE!");
-			msgText.show();
+			msgText.setText ("THE DOOR IS OPEN, FIND THE DOOR TO ESCAPE!");
+			msgText.show ();
 		}
 	}
 
-	void generateItem(string[] items){
+	void generateItem (string[] items) {
 		Debug.Log ("GenerateItem from string array");
 		Vector3 min = map.GetComponent<MeshRenderer> ().bounds.min;
 		Vector3 max = map.GetComponent<MeshRenderer> ().bounds.max;
@@ -117,46 +117,47 @@ public class GameController : MonoBehaviour {
 			float z = Random.Range (min.z, max.z);
 
 			if (items [i].Equals ("KEY")) {
-				GameObject tmp = Instantiate (itemList.key, new Vector3(x, 0.2f, z), Quaternion.identity) as GameObject;
-				gameItems.Add(tmp);	
+				GameObject tmp = Instantiate (itemList.key, new Vector3 (x, 0.2f, z), Quaternion.identity) as GameObject;
+				gameItems.Add (tmp);
 			}
 			if (items [i].Equals ("DOOR")) {
-				GameObject tmp = Instantiate (itemList.door, new Vector3(x, 0.2f, z), Quaternion.identity) as GameObject;
-				gameItems.Add(tmp);	
+				GameObject tmp = Instantiate (itemList.door, new Vector3 (x, 0.2f, z), Quaternion.identity) as GameObject;
+				gameItems.Add (tmp);	
 			}
 		}
 	}
 
-	void FindingMatch(){
-		Debug.Log("Finding match");
-		socket.Emit("JOIN_ROOM");
+	void FindingMatch () {
+		Debug.Log ("Finding match");
+		socket.Emit ("JOIN_ROOM");
 	}
 
-	void onDisconnect (SocketIOEvent obj){
+	void onDisconnect (SocketIOEvent obj) {
 		Debug.Log ("Disconnect");
 	}
 
-	void onPlay (SocketIOEvent obj){
+	void onPlay (SocketIOEvent obj) {
 		ui.SetActive (false);
 		player.SetActive (true);
 		this.isGamePlay = true;
 	}
 
-	void onStart (SocketIOEvent e){
+	void onStart (SocketIOEvent e) {
 		statusGame = STARTING;
-		JSONObject[] item = e.data.GetField ("data").list.ToArray ();
+		JSONObject[] items = e.data.GetField ("data").list.ToArray ();
 		Debug.Log ("Starting Game");
 		MapGenerator genMapComponent = map.GetComponent<MapGenerator> ();
-		genMapComponent.GenerateMap ();
+		genMapComponent.GenerateMap (items);
+		socket.Emit ("GAME_STATUS_READY");
 	}
 
 	void onJoined (SocketIOEvent obj) {
 		statusGame = JOINED;
 		Debug.Log ("Joined");
 		JSONObject response = obj.data.GetField ("roomInfo");
-		string status = response.GetField ("status").ToString();
-		string no = response.GetField ("no").ToString();
-		string level = response.GetField ("currentLevel").ToString();
+		string status = response.GetField ("status").ToString ();
+		string no = response.GetField ("no").ToString ();
+		string level = response.GetField ("currentLevel").ToString ();
 		string keyNo = response.GetField ("keyNo").ToString ();
 		keyNo = keyNo.Substring (1, keyNo.Length - 2);
 
@@ -179,8 +180,8 @@ public class GameController : MonoBehaviour {
 		FindingMatch ();
 	}
 
-	string JsonToString( string target, string s){
-		string[] newString = Regex.Split(target,s);
-		return newString[1];
+	string JsonToString (string target, string s) {
+		string[] newString = Regex.Split (target, s);
+		return newString [1];
 	}
 }

@@ -79,7 +79,6 @@ public class MeshGenerator : MonoBehaviour {
 		Debug.Log("NavMesh generated in " + (endTime - startTime) + "s");
 		gameObject.GetComponentInChildren<RAIN.Navigation.NavMesh.NavMeshRig>().NavMesh.RegisterNavigationGraph();
 		gameObject.GetComponentInChildren<RAIN.Navigation.NavMesh.NavMeshRig>().Awake();
-		GameController.instance.socket.Emit ("GAME_STATUS_READY");
 	}
 
 	void CreateWallMesh () {
@@ -337,7 +336,6 @@ public class MeshGenerator : MonoBehaviour {
 					squares [x, y] = new Square (controlNodes [x, y + 1], controlNodes [x + 1, y + 1], controlNodes [x + 1, y], controlNodes [x, y]);
 				}
 			}
-
 		}
 	}
 
