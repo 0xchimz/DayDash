@@ -272,4 +272,8 @@ public class GameController : MonoBehaviour {
 		string[] newString = Regex.Split (target, s);
 		return newString [1];
 	}
+
+	public void playerDead () {
+		landingPage ();
+	}
 }
