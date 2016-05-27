@@ -21,6 +21,8 @@ public class EnvironmentGenerator : MonoBehaviour {
 	public GameObject flower;
 
 	public void GenerateEnvironment (PositionRandomizer randomizer) {
+		Destroy (this);
+
 		for (int i = 0; i < MAX; i++) {
 			switch (Random.Range (0, 3)) {
 			case 0:

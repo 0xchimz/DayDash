@@ -7,6 +7,8 @@ public class ItemsGenerator : MonoBehaviour {
 	public GameObject door;
 
 	public void GenerateItems (PositionRandomizer randomizer, JSONObject[] items) {
+		Destroy (this);
+
 		for (int i = 0; i < items.Length; i++) {
 			string temp = items [i].ToString ();
 			Debug.Log ("temp: " + temp);

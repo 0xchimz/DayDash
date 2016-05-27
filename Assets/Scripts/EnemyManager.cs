@@ -24,6 +24,8 @@ public class EnemyManager : MonoBehaviour {
 	public void CreateEnemyManager (PositionRandomizer posr) {
 		randomizer = posr;
 		StartCoroutine (navMeshCheck ());
+		blueEnemy.tag = "Enemy";
+		redEnemy.tag = "Enemy";
 	}
 
 	IEnumerator navMeshCheck () {

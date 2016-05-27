@@ -123,6 +123,22 @@ public class GameController : MonoBehaviour {
 	}
 
 	void onStart (SocketIOEvent e) {
+
+		GameObject[] objects = GameObject.FindGameObjectsWithTag ("Environment");
+		for (int i = 0; i < objects.Length; i++) {
+			Destroy (objects [i]);
+		}
+
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemies");
+		for (int i = 0; i < enemies.Length; i++) {
+			Destroy (enemies [i]);
+		}
+
+		GameObject[] doors = GameObject.FindGameObjectsWithTag ("Door");
+		for (int i = 0; i < doors.Length; i++) {
+			Destroy (doors [i]);
+		}
+
 		statusGame = STARTING;
 		Debug.Log ("Starting Game");
 		Debug.Log (e.data.ToString ());
@@ -147,10 +163,10 @@ public class GameController : MonoBehaviour {
 		enemyManager.CreateEnemyManager (randomizer);
 	}
 
-	void onNextMatch(SocketIOEvent e) {
+	void onNextMatch (SocketIOEvent e) {
 		
-		UpdateUserDataRequest request = new UpdateUserDataRequest (){
-			Data = new Dictionary<string, string>(){
+		UpdateUserDataRequest request = new UpdateUserDataRequest () {
+			Data = new Dictionary<string, string> () {
 				
 			}
 		};
@@ -193,7 +209,7 @@ public class GameController : MonoBehaviour {
 		});
 	}
 
-	void clickFindMatch(){
+	void clickFindMatch () {
 		if (input.text != "") {
 			UpdateUserTitleDisplayNameRequest request = new UpdateUserTitleDisplayNameRequest ();
 			request.DisplayName = input.text;
@@ -209,31 +225,27 @@ public class GameController : MonoBehaviour {
 			});
 		}
 	}
-	void Login(string titleId)
-	{
-		LoginWithCustomIDRequest request = new LoginWithCustomIDRequest()
-		{
+
+	void Login (string titleId) {
+		LoginWithCustomIDRequest request = new LoginWithCustomIDRequest () {
 			TitleId = titleId,
 			CreateAccount = true,
 			CustomId = SystemInfo.deviceUniqueIdentifier
 		};
 
-		PlayFabClientAPI.LoginWithCustomID(request, (result) => {
+		PlayFabClientAPI.LoginWithCustomID (request, (result) => {
 			PlayFabId = result.PlayFabId;
-			Debug.Log("Got PlayFabID: " + PlayFabId);
+			Debug.Log ("Got PlayFabID: " + PlayFabId);
 
-			if(result.NewlyCreated)
-			{
-				Debug.Log("(new account)");
-			}
-			else
-			{
-				Debug.Log("(existing account)");
+			if (result.NewlyCreated) {
+				Debug.Log ("(new account)");
+			} else {
+				Debug.Log ("(existing account)");
 			}
 		},
 			(error) => {
-				Debug.Log("Error logging in player with custom ID:");
-				Debug.Log(error.ErrorMessage);
+				Debug.Log ("Error logging in player with custom ID:");
+				Debug.Log (error.ErrorMessage);
 			});
 	}
 
@@ -244,28 +256,23 @@ public class GameController : MonoBehaviour {
 		getUserData ();
 	}
 
-	void getUserData(){
-		GetUserDataRequest request2 = new GetUserDataRequest()
-		{
+	void getUserData () {
+		GetUserDataRequest request2 = new GetUserDataRequest () {
 			PlayFabId = PlayFabId,
 			Keys = null
 		};
-		PlayFabClientAPI.GetUserData(request2,(result) => {
-			Debug.Log("Got user data:");
-			if ((result.Data == null) || (result.Data.Count == 0))
-			{
-				Debug.Log("No user data available");
-			}
-			else
-			{
-				foreach (var item in result.Data)
-				{
-					Debug.Log("    " + item.Key + " == " + item.Value.Value);
+		PlayFabClientAPI.GetUserData (request2, (result) => {
+			Debug.Log ("Got user data:");
+			if ((result.Data == null) || (result.Data.Count == 0)) {
+				Debug.Log ("No user data available");
+			} else {
+				foreach (var item in result.Data) {
+					Debug.Log ("    " + item.Key + " == " + item.Value.Value);
 				}
 			}
 		}, (error) => {
-			Debug.Log("Got error retrieving user data:");
-			Debug.Log(error.ErrorMessage);
+			Debug.Log ("Got error retrieving user data:");
+			Debug.Log (error.ErrorMessage);
 		});
 	}
 
