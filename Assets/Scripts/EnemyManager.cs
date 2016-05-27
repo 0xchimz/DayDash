@@ -13,7 +13,10 @@ using RAIN.Navigation.NavMesh;
 public class EnemyManager : MonoBehaviour {
 
 	//public PlayerHealth playerHealth;	// Reference to the player's health.
-	public GameObject enemy;
+	public GameObject blueEnemy;
+	public GameObject redEnemy;
+	public GameObject greenEnemy;
+
 	public float spawnTime = 3f;
 
 	private MeshGenerator meshGen;
@@ -44,8 +47,17 @@ public class EnemyManager : MonoBehaviour {
 		}
 		*/
 
-		var rotation = Quaternion.Euler (0, Random.Range (0, 360), 0);
-		Instantiate (enemy, randomizer.RandomPosition (PositionRandomizer.MONSTER), rotation);
+		switch (Random.Range (0, 3)) {
+		case 0:
+			Create (blueEnemy);
+			break;
+		case 1:
+			Create (blueEnemy);
+			break;
+		case 2:
+			Create (redEnemy);
+			break;
+		}
 
 		// Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
 		//enemy.gameObject.GetComponentInChildren<AIRig>().AI.Motor.DefaultSpeed = 10;
@@ -57,5 +69,10 @@ public class EnemyManager : MonoBehaviour {
 		tCustomAsset.SetTreeBindings(new string[0] { });
 		((BasicMind)enemy.gameObject.GetComponentInChildren<AIRig>().AI.Mind).SetBehavior(tCustomAsset, new List<BTAssetBinding>());
 		**/
+	}
+
+	void Create (GameObject obj) {
+		var rotation = Quaternion.Euler (0, Random.Range (0, 360), 0);
+		Instantiate (obj, randomizer.RandomPosition (PositionRandomizer.MONSTER), rotation);
 	}
 }

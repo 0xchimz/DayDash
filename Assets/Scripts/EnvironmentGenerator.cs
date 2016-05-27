@@ -9,6 +9,17 @@ public class EnvironmentGenerator : MonoBehaviour {
 	public GameObject treePine04;
 	public GameObject treePine07;
 
+	public GameObject brush01;
+	public GameObject brush02;
+	public GameObject brush03;
+
+	public GameObject treeStump;
+	public GameObject cloud01;
+	public GameObject cloud02;
+
+	public GameObject rock;
+	public GameObject flower;
+
 	public void GenerateEnvironment (PositionRandomizer randomizer) {
 		for (int i = 0; i < MAX; i++) {
 			switch (Random.Range (0, 3)) {
@@ -23,6 +34,40 @@ public class EnvironmentGenerator : MonoBehaviour {
 			case 2:
 				treePine07.tag = "Environment";
 				Create (randomizer, treePine07);
+				break;
+			}
+		}
+
+		for (int i = 0; i < 20; i++) {
+			switch (Random.Range (0, 3)) {
+			case 0:
+				brush02.tag = "Environment";
+				Create (randomizer, brush02);
+				break;
+			case 1:
+				brush03.tag = "Environment";
+				Create (randomizer, brush03);
+				break;
+			case 2:
+				rock.tag = "Environment";
+				Create (randomizer, rock);
+				break;
+			}
+		}
+
+		for (int i = 0; i < 10; i++) {
+			switch (Random.Range (0, 3)) {
+			case 0:
+				treeStump.tag = "Environment";
+				Create (randomizer, treeStump);
+				break;
+			case 1:
+				cloud01.tag = "Environment";
+				Create (randomizer, cloud01);
+				break;
+			case 2:
+				cloud02.tag = "Environment";
+				Create (randomizer, cloud02);
 				break;
 			}
 		}
