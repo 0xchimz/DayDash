@@ -54,6 +54,7 @@ public class GameController : MonoBehaviour {
 		socket.On ("PLAY_GAME", onPlay);
 		socket.On ("EVENT", onEvent);
 		socket.On ("USER_DISCONNECTED", onUserDisconnected);
+		socket.On ("NEXT_MATCH", onNextMatch);
 
 		socket.On ("error", onError);
 		socket.On ("connect", onUserConnected);
@@ -123,7 +124,7 @@ public class GameController : MonoBehaviour {
 
 		Debug.Log ("Generate Randomizer");
 		PositionRandomizer randomizer = map.GetComponent<PositionRandomizer> ();
-
+	
 		player.transform.position = randomizer.RandomPosition (PositionRandomizer.PLAYER);
 
 		ItemsGenerator itemsGen = items.GetComponent<ItemsGenerator> ();
@@ -136,6 +137,12 @@ public class GameController : MonoBehaviour {
 		enemyManager.CreateEnemyManager (randomizer);
 
 		socket.Emit ("GAME_STATUS_READY");
+	}
+
+	void onNextMatch(SocketIOEvent e) {
+		onStart (e);
+		ui.SetActive (true);
+		player.SetActive (false);
 	}
 
 	void onJoined (SocketIOEvent obj) {

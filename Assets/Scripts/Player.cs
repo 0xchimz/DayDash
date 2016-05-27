@@ -20,6 +20,18 @@ public class Player : MonoBehaviour {
 		gameObject.GetComponentInChildren<NavigationTargetRig> ().Target.TargetName = "NavTarget";
 	}
 
+	void OnCollisionEnter (Collision e){
+		if (e.gameObject.tag == "Door") {
+			socket.Emit ("PLAYER_ENTER_DOOR");
+		}
+	}
+
+	void OnCollisionExit (Collision e){
+		if (e.gameObject.tag == "Door") {
+			socket.Emit ("PLAYER_EXIT_DOOR");
+		}
+	}
+
 	void OnTriggerEnter (Collider gameElement) {
 		if (gameElement.tag == "Key") {
 			Debug.Log ("Player got key");
