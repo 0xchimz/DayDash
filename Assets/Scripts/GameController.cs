@@ -146,6 +146,8 @@ public class GameController : MonoBehaviour {
 
 		EnemyManager enemyManager = enemies.GetComponent<EnemyManager> ();
 		enemyManager.CreateEnemyManager (randomizer);
+
+		socket.Emit ("GAME_STATUS_READY");
 	}
 
 	void onNextMatch (SocketIOEvent e) {
