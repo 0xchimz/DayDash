@@ -11,16 +11,17 @@ public class EnvironmentGenerator : MonoBehaviour {
 
 	public void GenerateEnvironment(PositionRandomizer randomizer) {
 		for (int i = 0; i < MAX; i++) {
+			var rotation = Quaternion.Euler (0, Random.Range (0, 360), 0);
 
 			switch (Random.Range (0, 3)) {
 			case 0:
-				Instantiate (treePine01, randomizer.RandomPosition (PositionRandomizer.ENVI), Quaternion.identity);
+				Instantiate (treePine01, randomizer.RandomPosition (PositionRandomizer.ENVI), rotation);
 				break;
 			case 1:
-				Instantiate (treePine04, randomizer.RandomPosition (PositionRandomizer.ENVI), Quaternion.identity);
+				Instantiate (treePine04, randomizer.RandomPosition (PositionRandomizer.ENVI), rotation);
 				break;
 			case 2:
-				Instantiate (treePine07, randomizer.RandomPosition (PositionRandomizer.ENVI), Quaternion.identity);
+				Instantiate (treePine07, randomizer.RandomPosition (PositionRandomizer.ENVI), rotation);
 				break;
 			}
 		}

@@ -117,7 +117,6 @@ public class GameController : MonoBehaviour {
 		JSONObject[] itemList = e.data.GetField ("data").GetField ("items").list.ToArray ();
 		Debug.Log (itemList);
 
-		Debug.Log ("Generate Map");
 		MapGenerator mapGen = map.GetComponent<MapGenerator> ();
 		mapGen.GenerateMap ();
 

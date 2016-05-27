@@ -11,26 +11,15 @@ using RAIN;
 using RAIN.Navigation.NavMesh;
 
 public class EnemyManager : MonoBehaviour {
+
 	//public PlayerHealth playerHealth;	// Reference to the player's health.
 	public GameObject enemy;
-	// The enemy prefab to be spawned.
 	public float spawnTime = 3f;
-	// How long between each spawn.
-	public Transform[] spawnPoints;
-	// An array of the spawn points this enemy can spawn from.
 
 	private MeshGenerator meshGen;
 	PositionRandomizer randomizer;
 
-	// Use this for initialization
-	void Start () {
-		//GameObject tmp = GameObject.Find ("Map Generator");
-		//meshGen = tmp.GetComponent<MeshGenerator> ();
-		// Call the Spawn function after a delay of the spawnTime and then continue to call after the same amount of time.
-		//InvokeRepeating("Spawn", spawnTime, spawnTime);
-	}
-
-	public void CreateEnemyManager(PositionRandomizer posr) {
+	public void CreateEnemyManager (PositionRandomizer posr) {
 		randomizer = posr;
 		StartCoroutine (navMeshCheck ());
 	}
@@ -55,10 +44,9 @@ public class EnemyManager : MonoBehaviour {
 		}
 		*/
 
-		// Fina a random index between zero and one less than the number of spawn points.
-		int spawnPointIndex = Random.Range (0, spawnPoints.Length);
+		var rotation = Quaternion.Euler (0, Random.Range (0, 360), 0);
+		Instantiate (enemy, randomizer.RandomPosition (PositionRandomizer.MONSTER), rotation);
 
-		Instantiate (enemy, randomizer.RandomPosition (PositionRandomizer.MONSTER), spawnPoints [spawnPointIndex].rotation);
 		// Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
 		//enemy.gameObject.GetComponentInChildren<AIRig>().AI.Motor.DefaultSpeed = 10;
 		/**

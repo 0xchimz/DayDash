@@ -24,6 +24,8 @@ public class MapGenerator : MonoBehaviour {
 	int[,] map;
 
 	public void GenerateMap () {
+		randomFillPercent = UnityEngine.Random.Range(48, 53);
+
 		map = new int[width, height];
 		RandomFillMap ();
 
