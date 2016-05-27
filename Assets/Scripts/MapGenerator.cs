@@ -23,7 +23,7 @@ public class MapGenerator : MonoBehaviour {
 
 	int[,] map;
 
-	public void GenerateMap (JSONObject[] items) {
+	public void GenerateMap (GameObject player, JSONObject[] items) {
 		map = new int[width, height];
 		RandomFillMap ();
 
@@ -50,7 +50,7 @@ public class MapGenerator : MonoBehaviour {
 		meshGen.GenerateMesh (borderedMap, SQUARE_SIZE);
 
 		ItemsGenerator itemsGen = GetComponent<ItemsGenerator> ();
-		itemsGen.GenerateItems (borderedMap, SQUARE_SIZE, items);
+		itemsGen.GenerateItems (borderedMap, SQUARE_SIZE, player, items);
 	}
 
 	void ProcessMap () {

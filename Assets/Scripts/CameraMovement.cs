@@ -13,6 +13,5 @@ public class CameraMovement : MonoBehaviour {
 	void Update () {
 		camPosition = new Vector3 (player.transform.position.x - 0.5f, player.transform.position.y + 6, player.transform.position.z - 6);
 		transform.position = camPosition;
-
 	}
 }

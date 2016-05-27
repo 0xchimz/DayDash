@@ -10,7 +10,7 @@ public class ItemsGenerator : MonoBehaviour {
 	float squareSize;
 	int[,] map;
 
-	public void GenerateItems (int[,] originalMap, float sqSize, JSONObject[] items) {
+	public void GenerateItems (int[,] originalMap, float sqSize, GameObject player, JSONObject[] items) {
 		Debug.Log ("Generating Items");
 
 		squareSize = sqSize;
@@ -20,6 +20,8 @@ public class ItemsGenerator : MonoBehaviour {
 		Debug.Log (items);
 		Debug.Log (items.Length);
 
+		player.transform.position = RandomPosition ();
+
 		for (int i = 0; i < items.Length; i++) {
 			string temp = items [i].ToString ();
 			Debug.Log ("temp: " + temp);
@@ -28,15 +30,15 @@ public class ItemsGenerator : MonoBehaviour {
 
 			if (item.Equals ("KEY")) {
 				Debug.Log ("add key");
-				Instantiate (key, RandomPosition(), Quaternion.identity);
+				Instantiate (key, RandomPosition (), Quaternion.identity);
 			} else if (item.Equals ("DOOR")) {
 				Debug.Log ("add door");
-				Instantiate (door, RandomPosition(), Quaternion.identity);
+				Instantiate (door, RandomPosition (), Quaternion.identity);
 			}
 		}
 	}
 
-	Vector3 RandomPosition() {
+	Vector3 RandomPosition () {
 		int nodeCountX = map.GetLength (0);
 		int nodeCountY = map.GetLength (1);
 		float mapWidth = nodeCountX * squareSize;

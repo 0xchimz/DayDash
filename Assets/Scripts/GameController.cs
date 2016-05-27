@@ -147,7 +147,7 @@ public class GameController : MonoBehaviour {
 		JSONObject[] items = e.data.GetField ("data").list.ToArray ();
 		Debug.Log ("Starting Game");
 		MapGenerator genMapComponent = map.GetComponent<MapGenerator> ();
-		genMapComponent.GenerateMap (items);
+		genMapComponent.GenerateMap (player, items);
 		socket.Emit ("GAME_STATUS_READY");
 	}
 
