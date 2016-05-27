@@ -15,7 +15,6 @@ public class EnemyManager : MonoBehaviour {
 	//public PlayerHealth playerHealth;	// Reference to the player's health.
 	public GameObject blueEnemy;
 	public GameObject redEnemy;
-	public GameObject greenEnemy;
 
 	public float spawnTime = 3f;
 
