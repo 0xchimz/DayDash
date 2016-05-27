@@ -11,10 +11,12 @@ using RAIN.BehaviorTrees;
 using RAIN.Minds;
 using RAIN.Memory;
 using RAIN;
+using PlayFab;
+using PlayFab.ClientModels;
 
 public class GameController : MonoBehaviour {
 
-	public readonly int CONNECTING = 0, CONNECTED = 1, FINDING_MATCH = 2, JOINED = 3, STARTING = 4;
+	public readonly int CONNECTING = 0, CONNECTED = 1, FINDING_MATCH = 2, JOINED = 3, STARTING = 4, LANDING = 5;
 	public static GameController instance;
 	public SocketIOComponent socket;
 
@@ -25,19 +27,24 @@ public class GameController : MonoBehaviour {
 	private MessageText msgText;
 
 	public Text status;
+	public InputField input;
+	public Button btn;
 	public GameObject ui;
 	public GameObject map;
 	public GameObject items;
 	public GameObject environment;
 	public GameObject enemies;
+	public string PlayFabId;
 
 	public bool isGamePlay = false;
 
 	void Awake () {
+		PlayFabSettings.TitleId = "8CF2";
 		instance = this;
 	}
 
 	void Start () {
+		Login ("8CF2");
 		player = GameObject.Find ("Player");
 		playerComponent = player.GetComponent<Player> ();
 		player.SetActive (false);
@@ -45,6 +52,8 @@ public class GameController : MonoBehaviour {
 		playerComponent.GetComponentInChildren<NavigationTargetRig> ().Target.TargetName = "NavTarget";
 
 		ui.SetActive (true);
+		input.gameObject.SetActive (false);
+		btn.gameObject.SetActive (false);
 
 		GameObject go = GameObject.Find ("SocketIO");
 		socket = go.GetComponent<SocketIOComponent> ();
@@ -75,6 +84,8 @@ public class GameController : MonoBehaviour {
 			status.text = "JOINED, WAIT OTHER PLAYER...";
 		} else if (statusGame == STARTING) {
 			status.text = "STARTING GAME...";
+		} else if (statusGame == LANDING) {
+			status.text = "Please Input your name.";
 		}
 	}
 
@@ -134,14 +145,18 @@ public class GameController : MonoBehaviour {
 
 		EnemyManager enemyManager = enemies.GetComponent<EnemyManager> ();
 		enemyManager.CreateEnemyManager (randomizer);
-
-		socket.Emit ("GAME_STATUS_READY");
 	}
 
 	void onNextMatch(SocketIOEvent e) {
-		onStart (e);
+		
+		UpdateUserDataRequest request = new UpdateUserDataRequest (){
+			Data = new Dictionary<string, string>(){
+				
+			}
+		};
 		ui.SetActive (true);
 		player.SetActive (false);
+		onStart (e);
 	}
 
 	void onJoined (SocketIOEvent obj) {
@@ -167,10 +182,90 @@ public class GameController : MonoBehaviour {
 		Debug.Log ("Desconnect from server.");
 	}
 
+	void landingPage () {
+		statusGame = LANDING;
+		input.gameObject.SetActive (true);
+		btn.gameObject.SetActive (true);
+
+		btn.onClick.AddListener (delegate {
+			clickFindMatch ();	
+		});
+	}
+
+	void clickFindMatch(){
+		if (input.text != "") {
+			UpdateUserTitleDisplayNameRequest request = new UpdateUserTitleDisplayNameRequest ();
+			request.DisplayName = input.text;
+			PlayFabClientAPI.UpdateUserTitleDisplayName (request, (UpdateUserTitleDisplayNameResult result) => {
+				status.text = "Saving...";
+				Debug.Log ("Update Display Success");
+				input.gameObject.SetActive (false);
+				btn.gameObject.SetActive (false);
+				FindingMatch ();
+			}, (PlayFabError error) => {
+				status.text = "Cannot update display name...";
+				Debug.Log ("Update Display Error");
+			});
+		}
+	}
+	void Login(string titleId)
+	{
+		LoginWithCustomIDRequest request = new LoginWithCustomIDRequest()
+		{
+			TitleId = titleId,
+			CreateAccount = true,
+			CustomId = SystemInfo.deviceUniqueIdentifier
+		};
+
+		PlayFabClientAPI.LoginWithCustomID(request, (result) => {
+			PlayFabId = result.PlayFabId;
+			Debug.Log("Got PlayFabID: " + PlayFabId);
+
+			if(result.NewlyCreated)
+			{
+				Debug.Log("(new account)");
+			}
+			else
+			{
+				Debug.Log("(existing account)");
+			}
+		},
+			(error) => {
+				Debug.Log("Error logging in player with custom ID:");
+				Debug.Log(error.ErrorMessage);
+			});
+	}
+
 	public void onUserConnected (SocketIOEvent obj) {
 		Debug.Log ("Connected.");
 		statusGame = CONNECTED;
-		FindingMatch ();
+		landingPage ();
+		getUserData ();
+	}
+
+	void getUserData(){
+		GetUserDataRequest request2 = new GetUserDataRequest()
+		{
+			PlayFabId = PlayFabId,
+			Keys = null
+		};
+		PlayFabClientAPI.GetUserData(request2,(result) => {
+			Debug.Log("Got user data:");
+			if ((result.Data == null) || (result.Data.Count == 0))
+			{
+				Debug.Log("No user data available");
+			}
+			else
+			{
+				foreach (var item in result.Data)
+				{
+					Debug.Log("    " + item.Key + " == " + item.Value.Value);
+				}
+			}
+		}, (error) => {
+			Debug.Log("Got error retrieving user data:");
+			Debug.Log(error.ErrorMessage);
+		});
 	}
 
 	string JsonToString (string target, string s) {
