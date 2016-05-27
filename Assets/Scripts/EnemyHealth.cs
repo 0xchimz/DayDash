@@ -1,24 +1,30 @@
 ﻿using UnityEngine;
 
-public class EnemyHealth : MonoBehaviour
-{
-	public int startingHealth = 100;            // The amount of health the enemy starts the game with.
-	public int currentHealth;                   // The current health the enemy has.
-	private float sinkSpeed = 5f;              // The speed at which the enemy sinks through the floor when dead.
-	public int scoreValue = 10;                 // The amount added to the player's score when the enemy dies.
+public class EnemyHealth : MonoBehaviour {
+	public int startingHealth = 100;
+	// The amount of health the enemy starts the game with.
+	public int currentHealth;
+	// The current health the enemy has.
+	private float sinkSpeed = 5f;
+	// The speed at which the enemy sinks through the floor when dead.
+	public int scoreValue = 10;
+	// The amount added to the player's score when the enemy dies.
 	//public AudioClip deathClip;                 // The sound to play when the enemy dies.
 
 
-	Animator anim;                              // Reference to the animator.
+	Animator anim;
+	// Reference to the animator.
 	//AudioSource enemyAudio;                     // Reference to the audio source.
 	//ParticleSystem hitParticles;                // Reference to the particle system that plays when the enemy is damaged.
-	BoxCollider boxCollider;            // Reference to the capsule collider.
-	bool isDead;                                // Whether the enemy is dead.
-	bool isSinking;                             // Whether the enemy has started sinking through the floor.
+	BoxCollider boxCollider;
+	// Reference to the capsule collider.
+	bool isDead;
+	// Whether the enemy is dead.
+	bool isSinking;
+	// Whether the enemy has started sinking through the floor.
 
 
-	void Awake ()
-	{
+	void Awake () {
 		// Setting up the references.
 		anim = GetComponent <Animator> ();
 		anim.speed = 2;
@@ -31,21 +37,18 @@ public class EnemyHealth : MonoBehaviour
 		currentHealth = startingHealth;
 	}
 
-	void Update ()
-	{
+	void Update () {
 		// If the enemy should be sinking...
-		if(isSinking)
-		{
+		if (isSinking) {
 			// ... move the enemy down by the sinkSpeed per second.
 			transform.Translate (-Vector3.up * sinkSpeed * Time.deltaTime);
 		}
 	}
 
 
-	public void TakeDamage (int amount)
-	{
+	public void TakeDamage (int amount) {
 		// If the enemy is dead...
-		if(isDead)
+		if (isDead)
 			// ... no need to take damage so exit the function.
 			return;
 
@@ -53,20 +56,19 @@ public class EnemyHealth : MonoBehaviour
 
 		currentHealth -= amount;
 
-		anim.SetTrigger("Take Damage");
-		Debug.Log ("Enemy HP = " + currentHealth );
+		anim.SetTrigger ("Take Damage");
+		Debug.Log ("Enemy HP = " + currentHealth);
 
 
 		// If the current health is less than or equal to zero...
-		if(currentHealth <= 0){
+		if (currentHealth <= 0) {
 			anim.speed = 1;
 			Death ();
 		}
 	}
 
 
-	void Death ()
-	{
+	void Death () {
 		// The enemy is dead.
 		isDead = true;
 
@@ -79,8 +81,7 @@ public class EnemyHealth : MonoBehaviour
 	}
 
 
-	public void StartSinking ()
-	{
+	public void StartSinking () {
 		// Find and disable the Nav Mesh Agent.
 		GetComponent <NavMeshAgent> ().enabled = false;
 

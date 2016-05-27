@@ -36,10 +36,13 @@ public class PositionRandomizer : MonoBehaviour {
 			x = Random.Range (0, nodeCountX);
 			y = Random.Range (0, nodeCountY);
 
-			if (map [x, y] == 0) {
+			if (map [x, y] == 0 && mark >= 0) {
 				if (mark != 0)
 					map [x, y] = 99;
-//				Debug.Log ("pos: " + x + ", " + y);
+				return new Vector3 (-mapWidth / 2 + x * squareSize + squareSize / 2, 0.1f, -mapHeight / 2 + y * squareSize + squareSize / 2);
+				available = true;
+			} else if (map [x, y] == 0 && mark < 0 && isNearbyAvailable (x, y)) {
+				map [x, y] = 99;
 				return new Vector3 (-mapWidth / 2 + x * squareSize + squareSize / 2, 0.1f, -mapHeight / 2 + y * squareSize + squareSize / 2);
 				available = true;
 			}
@@ -53,11 +56,11 @@ public class PositionRandomizer : MonoBehaviour {
 			return false;
 		}
 
-		if (map [x + 1, y] > 0 && map [x - 1, y] > 0 && map [x, y + 1] > 0 && map [x, y - 1] > 0) {
+		if (map [x + 1, y] == 0 && map [x - 1, y] == 0 && map [x, y + 1] == 0 && map [x, y - 1] == 0) {
 			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	public Vector3 GetRandomPosition () {

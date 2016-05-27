@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EnvironmentGenerator : MonoBehaviour {
 
-	const int MAX = 20;
+	const int MAX = 50;
 
 	public GameObject treePine01;
 	public GameObject treePine04;
