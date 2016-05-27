@@ -9,21 +9,27 @@ public class EnvironmentGenerator : MonoBehaviour {
 	public GameObject treePine04;
 	public GameObject treePine07;
 
-	public void GenerateEnvironment(PositionRandomizer randomizer) {
+	public void GenerateEnvironment (PositionRandomizer randomizer) {
 		for (int i = 0; i < MAX; i++) {
-			var rotation = Quaternion.Euler (0, Random.Range (0, 360), 0);
-
 			switch (Random.Range (0, 3)) {
 			case 0:
-				Instantiate (treePine01, randomizer.RandomPosition (PositionRandomizer.ENVI), rotation);
+				treePine01.tag = "Environment";
+				Create (randomizer, treePine01);
 				break;
 			case 1:
-				Instantiate (treePine04, randomizer.RandomPosition (PositionRandomizer.ENVI), rotation);
+				treePine04.tag = "Environment";
+				Create (randomizer, treePine04);
 				break;
 			case 2:
-				Instantiate (treePine07, randomizer.RandomPosition (PositionRandomizer.ENVI), rotation);
+				treePine07.tag = "Environment";
+				Create (randomizer, treePine07);
 				break;
 			}
 		}
+	}
+
+	void Create (PositionRandomizer randomizer, GameObject obj) {
+		var rotation = Quaternion.Euler (0, Random.Range (0, 360), 0);
+		Instantiate (obj, randomizer.RandomPosition (PositionRandomizer.ENVI), rotation);
 	}
 }

@@ -39,7 +39,7 @@ public class PositionRandomizer : MonoBehaviour {
 			if (map [x, y] == 0) {
 				if (mark != 0)
 					map [x, y] = 99;
-				Debug.Log ("pos: " + x + ", " + y);
+//				Debug.Log ("pos: " + x + ", " + y);
 				return new Vector3 (-mapWidth / 2 + x * squareSize + squareSize / 2, 0.1f, -mapHeight / 2 + y * squareSize + squareSize / 2);
 				available = true;
 			}
