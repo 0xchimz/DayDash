@@ -37,6 +37,9 @@ public class EnemyManager : MonoBehaviour {
 	}
 
 	void Spawn () {
+		if (spawnTime < 10.0f) {
+			spawnTime += 1.0f;
+		}
 		// If the player has no health left...
 
 		/*
