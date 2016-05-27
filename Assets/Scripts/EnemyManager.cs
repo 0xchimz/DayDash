@@ -16,7 +16,7 @@ public class EnemyManager : MonoBehaviour {
 	public GameObject blueEnemy;
 	public GameObject redEnemy;
 
-	public float spawnTime = 3f;
+	public float spawnTime = 5f;
 
 	private MeshGenerator meshGen;
 	PositionRandomizer randomizer;
@@ -39,7 +39,7 @@ public class EnemyManager : MonoBehaviour {
 	}
 
 	void Spawn () {
-		if (spawnTime < 10.0f) {
+		if (spawnTime < 20.0f) {
 			spawnTime += 1.0f;
 		}
 		// If the player has no health left...
@@ -50,17 +50,10 @@ public class EnemyManager : MonoBehaviour {
 			return;
 		}
 		*/
-
-		switch (Random.Range (0, 3)) {
-		case 0:
-			Create (blueEnemy);
-			break;
-		case 1:
-			Create (blueEnemy);
-			break;
-		case 2:
+		if (Random.Range (0, 10) > 8) {
 			Create (redEnemy);
-			break;
+		} else {
+			Create (blueEnemy);
 		}
 
 		// Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.

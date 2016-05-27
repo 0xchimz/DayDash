@@ -124,21 +124,6 @@ public class GameController : MonoBehaviour {
 
 	void onStart (SocketIOEvent e) {
 
-		GameObject[] objects = GameObject.FindGameObjectsWithTag ("Environment");
-		for (int i = 0; i < objects.Length; i++) {
-			Destroy (objects [i]);
-		}
-
-		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemies");
-		for (int i = 0; i < enemies.Length; i++) {
-			Destroy (enemies [i]);
-		}
-
-		GameObject[] doors = GameObject.FindGameObjectsWithTag ("Door");
-		for (int i = 0; i < doors.Length; i++) {
-			Destroy (doors [i]);
-		}
-
 		statusGame = STARTING;
 		Debug.Log ("Starting Game");
 		Debug.Log (e.data.ToString ());
@@ -165,11 +150,26 @@ public class GameController : MonoBehaviour {
 
 	void onNextMatch (SocketIOEvent e) {
 		
-		UpdateUserDataRequest request = new UpdateUserDataRequest () {
-			Data = new Dictionary<string, string> () {
-				
-			}
-		};
+		GameObject[] objects = GameObject.FindGameObjectsWithTag ("Environment");
+		for (int i = 0; i < objects.Length; i++) {
+			Destroy (objects [i]);
+		}
+
+		GameObject[] _enemies = GameObject.FindGameObjectsWithTag ("Enemy");
+		for (int i = 0; i < _enemies.Length; i++) {
+			Destroy (_enemies [i]);
+		}
+
+		GameObject[] doors = GameObject.FindGameObjectsWithTag ("Door");
+		for (int i = 0; i < doors.Length; i++) {
+			Destroy (doors [i]);
+		}
+
+		GameObject[] keys = GameObject.FindGameObjectsWithTag ("Key");
+		for (int i = 0; i < keys.Length; i++) {
+			Destroy (keys [i]);
+		}
+
 		ui.SetActive (true);
 		player.SetActive (false);
 		onStart (e);

@@ -16,15 +16,17 @@ public class EnemyAttack : MonoBehaviour
 	float timer;                                // Timer for counting up to the next attack.
 
 
-	void Awake ()
+	void Start ()
 	{
-		// Setting up the references.
 		player = GameObject.FindGameObjectWithTag ("Player");
-		playerHealth = player.GetComponent <PlayerHealth> ();
-		//Debug.Log (playerHealth + " found.");
+		if (player != null) {
+			// Setting up the references.
+			playerHealth = player.GetComponent <PlayerHealth> ();
+			//Debug.Log (playerHealth + " found.");
 
-		enemyHealth = GetComponent<EnemyHealth>();
-		anim = GetComponent <Animator> ();
+			enemyHealth = GetComponent<EnemyHealth> ();
+			anim = GetComponent <Animator> ();
+		}
 	}
 
 
@@ -56,23 +58,31 @@ public class EnemyAttack : MonoBehaviour
 
 	void Update ()
 	{
-		// Add the time since Update was last called to the timer.
-		timer += Time.deltaTime;
+		if (GameController.instance.isGamePlay && player != null) {
+			player = GameObject.FindGameObjectWithTag ("Player");
+			playerHealth = player.GetComponent <PlayerHealth> ();
+			//Debug.Log (playerHealth + " found.");
 
-		// If the timer exceeds the time between attacks, the player is in range and this enemy is alive...
-		if(timer >= timeBetweenAttacks && playerInRange && enemyHealth.currentHealth > 0)
-		{
-			// ... attack.
-			PerformAttack ();
+			enemyHealth = GetComponent<EnemyHealth> ();
+			anim = GetComponent <Animator> ();
 		}
+		if (GameController.instance.isGamePlay && playerHealth != null) {
+			// Add the time since Update was last called to the timer.
+			timer += Time.deltaTime;
 
-		// If the player has zero or less health...
+			// If the timer exceeds the time between attacks, the player is in range and this enemy is alive...
+			if (timer >= timeBetweenAttacks && playerInRange && enemyHealth.currentHealth > 0) {
+				// ... attack.
+				PerformAttack ();
+			}
+
+			// If the player has zero or less health...
 
 
-		if(playerHealth.currentHealth <= 0)
-		{
-			anim.speed = 0;
-		//	anim.SetTrigger ("PlayerDead");
+			if (playerHealth.currentHealth <= 0) {
+				anim.speed = 0;
+				//	anim.SetTrigger ("PlayerDead");
+			}
 		}
 
 	}
